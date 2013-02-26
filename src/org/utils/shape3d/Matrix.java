@@ -1,6 +1,9 @@
 package org.utils.shape3d;
 
 public class Matrix implements IMatrix {
+	private Matrix tr = new Matrix();
+	private Matrix ro = new Matrix();
+	private Matrix sc = new Matrix();
 	
 	private double[][] matrix = new double[4][4];
 
@@ -25,7 +28,7 @@ public class Matrix implements IMatrix {
 
 	@Override
 	public void translate(double x, double y, double z) {
-		Matrix tr = new Matrix();
+
 		tr.identity();
 		tr.set(3, 0, x);
 		tr.set(3, 1, y);
@@ -35,7 +38,7 @@ public class Matrix implements IMatrix {
 
 	@Override
 	public void rotateX(double radians) {
-		Matrix ro = new Matrix();
+		
 		ro.identity();
 		ro.set(1, 1, Math.cos(radians));
 		ro.set(2, 1, -Math.sin(radians));
@@ -46,7 +49,6 @@ public class Matrix implements IMatrix {
 
 	@Override
 	public void rotateY(double radians) {
-		Matrix ro = new Matrix();
 		ro.identity();
 		ro.set(0, 0, Math.cos(radians));
 		ro.set(2, 0, -Math.sin(radians));
@@ -57,7 +59,6 @@ public class Matrix implements IMatrix {
 
 	@Override
 	public void rotateZ(double radians) {
-		Matrix ro = new Matrix();
 		ro.identity();
 		ro.set(0, 0, Math.cos(radians));
 		ro.set(1, 0, -Math.sin(radians));
@@ -68,7 +69,7 @@ public class Matrix implements IMatrix {
 
 	@Override
 	public void scale(double x, double y, double z) {
-		Matrix sc = new Matrix();
+	
 		sc.identity();
 		sc.set(0, 0, x);
 		sc.set(1, 1, y);
