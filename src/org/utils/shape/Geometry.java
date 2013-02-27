@@ -25,19 +25,10 @@ public abstract class Geometry {
 		return m;
 	}
 	
-	public void drawShape(Graphics g, Projection p) {
-		m.identity();
-		m.rotateY(.3);
-		m.rotateX(.3);
-		for(int i = 0 ; i < faces.length ; i++){
-			drawEdge(vertices[faces[i][0]], vertices[faces[i][1]], g, p);
-			//drawEdge(vertices[faces[i][1]], vertices[faces[i][2]], g, p);
-			//drawEdge(vertices[faces[i][2]], vertices[faces[i][3]], g, p);
-			drawEdge(vertices[faces[i][2]], vertices[faces[i][0]], g, p);
-		}
-	}
+	public abstract void drawShape(Graphics g, Projection p);
 	
-	private void drawEdge(double[] point1, double[] point2, Graphics g, Projection proj){
+	
+	void drawEdge(double[] point1, double[] point2, Graphics g, Projection proj){
 		m.transform(point1, dst1);
 		m.transform(point2, dst2);
 		

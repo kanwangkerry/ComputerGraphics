@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import org.utils.BufferedApplet;
 import org.utils.shape.Geometry;
+import org.utils.shape.ShapeCube;
 import org.utils.shape.ShapeSphere;
 import org.utils.transform.Projection;
 
@@ -25,9 +26,9 @@ public class SimplePersone extends BufferedApplet {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, w, h);
 		g.setColor(Color.black);
-		Geometry ball = new ShapeSphere();
-		ball.globe(20, 20);
-		ball.drawShape(g, proj);
+		Geometry cube = new ShapeCube();
+		cube.globe(20, 20);
+		cube.drawShape(g, proj);
 
 	}
 

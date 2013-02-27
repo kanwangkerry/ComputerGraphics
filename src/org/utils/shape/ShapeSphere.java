@@ -1,11 +1,15 @@
 package org.utils.shape;
 
+import java.awt.Graphics;
+
+import org.utils.transform.Projection;
+
 public class ShapeSphere extends Geometry {
 
 	@Override
 	public void globe(int M, int N) {
 		this.faces = new int[M * N][3];
-		this.vertices = new double[(M + 1) * (N + 1)][3];
+		this.vertices = new double[(M + 1) * (N + 1)][4];
 		double v0, v1, u0, u1;
 		for (int n = 0; n < N; n++) {
 			for (int m = 0; m < M; m++) {
@@ -29,6 +33,7 @@ public class ShapeSphere extends Geometry {
 			}
 		}
 
+		this.m.identity();
 	}
 
 	@Override
@@ -46,4 +51,11 @@ public class ShapeSphere extends Geometry {
 		return -Math.cos(Math.PI * v);
 	}
 
+	@Override
+	public void drawShape(Graphics g, Projection p) {
+		for (int i = 0; i < faces.length; i++) {
+			drawEdge(vertices[faces[i][0]], vertices[faces[i][1]], g, p);
+			drawEdge(vertices[faces[i][0]], vertices[faces[i][2]], g, p);
+		}
+	}
 }
