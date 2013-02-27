@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.utils.BufferedApplet;
-import org.utils.shape3d.Matrix;
-import org.utils.shape3d.Projection;
+import org.utils.transform.Matrix;
+import org.utils.transform.Projection;
 
 @SuppressWarnings("serial")
 public class Simple3D extends BufferedApplet {
