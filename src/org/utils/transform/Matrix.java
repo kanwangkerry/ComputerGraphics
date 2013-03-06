@@ -2,9 +2,7 @@ package org.utils.transform;
 
 public class Matrix implements IMatrix {
 
-	private static Matrix tr = new Matrix();
-	private static Matrix ro = new Matrix();
-	private static Matrix sc = new Matrix();
+	private static Matrix temp = new Matrix();
 	private static Matrix result = new Matrix();
 
 	private double[][] matrix = new double[4][4];
@@ -31,54 +29,57 @@ public class Matrix implements IMatrix {
 	@Override
 	synchronized public void translate(double x, double y, double z) {
 
-		tr.identity();
-		tr.set(3, 0, x);
-		tr.set(3, 1, y);
-		tr.set(3, 2, z);
-		this.rightMultiply(tr);
+		temp.identity();
+		temp.set(3, 0, x);
+		temp.set(3, 1, y);
+		temp.set(3, 2, z);
+		this.rightMultiply(temp);
 	}
 
 	@Override
 	synchronized public void rotateX(double radians) {
 
-		ro.identity();
-		ro.set(1, 1, Math.cos(radians));
-		ro.set(2, 1, -Math.sin(radians));
-		ro.set(1, 2, Math.sin(radians));
-		ro.set(2, 2, Math.cos(radians));
-		this.rightMultiply(ro);
+		temp.identity();
+		temp.set(1, 1, Math.cos(radians));
+		temp.set(2, 1, -Math.sin(radians));
+		temp.set(1, 2, Math.sin(radians));
+		temp.set(2, 2, Math.cos(radians));
+		this.rightMultiply(temp);
 	}
 
 	@Override
 	synchronized public void rotateY(double radians) {
-		ro.identity();
-		ro.set(0, 0, Math.cos(radians));
-		ro.set(2, 0, -Math.sin(radians));
-		ro.set(0, 2, Math.sin(radians));
-		ro.set(2, 2, Math.cos(radians));
-		this.rightMultiply(ro);
+		temp.identity();
+		temp.set(0, 0, Math.cos(radians));
+		temp.set(2, 0, -Math.sin(radians));
+		temp.set(0, 2, Math.sin(radians));
+		temp.set(2, 2, Math.cos(radians));
+		this.rightMultiply(temp);
 	}
 
 	@Override
 	synchronized public void rotateZ(double radians) {
-		ro.identity();
-		ro.set(0, 0, Math.cos(radians));
-		ro.set(1, 0, -Math.sin(radians));
-		ro.set(0, 1, Math.sin(radians));
-		ro.set(1, 1, Math.cos(radians));
-		this.rightMultiply(ro);
+		temp.identity();
+		temp.set(0, 0, Math.cos(radians));
+		temp.set(1, 0, -Math.sin(radians));
+		temp.set(0, 1, Math.sin(radians));
+		temp.set(1, 1, Math.cos(radians));
+		this.rightMultiply(temp);
 	}
 
 	@Override
 	synchronized public void scale(double x, double y, double z) {
 
-		sc.identity();
-		sc.set(0, 0, x);
-		sc.set(1, 1, y);
-		sc.set(2, 2, z);
-		this.rightMultiply(sc);
+		temp.identity();
+		temp.set(0, 0, x);
+		temp.set(1, 1, y);
+		temp.set(2, 2, z);
+		this.rightMultiply(temp);
 	}
 
+	/**
+	 * other * this
+	 */
 	@Override
 	synchronized public void leftMultiply(IMatrix other) {
 		
@@ -99,6 +100,9 @@ public class Matrix implements IMatrix {
 
 	}
 
+	/**
+	 * this * other
+	 */
 	@Override
 	synchronized public void rightMultiply(IMatrix other) {
 		for (int i = 0; i < 4; i++) {
