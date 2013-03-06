@@ -1,4 +1,4 @@
-package org.utils.shape3d;
+package org.utils.transform;
 
 public interface IMatrix
 {
