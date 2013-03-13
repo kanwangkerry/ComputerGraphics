@@ -28,8 +28,8 @@ public class ShapeSphere extends Geometry {
 						plotX(u1, v1), plotY(u1, v1), plotZ(u1, v1) };
 
 				faces[m + M * n] = new int[] { m + n * (M + 1),
-						m + 1 + n * (M + 1), m + (n + 1) * (M + 1),
-						m + 1 + (n + 1) * (M + 1) };
+						m + 1 + n * (M + 1), m +1+ (n + 1) * (M + 1),
+						m + (n + 1) * (M + 1) };
 			}
 		}
 
@@ -55,7 +55,7 @@ public class ShapeSphere extends Geometry {
 	public void drawShape(Graphics g, Projection p) {
 		for (int i = 0; i < faces.length; i++) {
 			drawEdge(vertices[faces[i][0]], vertices[faces[i][1]], g, p);
-			drawEdge(vertices[faces[i][0]], vertices[faces[i][2]], g, p);
+			drawEdge(vertices[faces[i][0]], vertices[faces[i][3]], g, p);
 		}
 	}
 }

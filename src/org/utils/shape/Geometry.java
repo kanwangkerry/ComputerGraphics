@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import org.utils.render.RenderPolygons;
 import org.utils.transform.Matrix;
 import org.utils.transform.Projection;
 
@@ -16,6 +17,7 @@ public abstract class Geometry implements IGeometry{
 	private double dst2[] = new double[3];
 	private int end1[] = new int[2];
 	private int end2[] = new int[2];
+	private int end[][] = new int[4][2];
 	
 	private ArrayList<IGeometry> child = new ArrayList<IGeometry>();
 	
@@ -39,11 +41,43 @@ public abstract class Geometry implements IGeometry{
 		}
 	}
 	
+	public static void renderFromRoot(Geometry root, ArrayList<RenderPolygons> s, Projection proj){
+		Geometry pointer = root;
+		LinkedList<IGeometry> q = new LinkedList<IGeometry>();
+		q.add(pointer);
+		while(!q.isEmpty()){
+			pointer = (Geometry) q.pollFirst();
+			s.addAll(pointer.renderShape(proj));
+			for(int i = 0 ; i < pointer.getNumChild() ;i++){
+				pointer.getChild(i).getMatrix().leftMultiply(pointer.getMatrix());
+				q.add(pointer.getChild(i));
+			}			
+		}
+	}
+	
 	public Matrix getMatrix(){
 		return m;
 	}
 	
-	public abstract void drawShape(Graphics g, Projection p);	
+	public abstract void drawShape(Graphics g, Projection p);
+	
+	
+	public ArrayList<RenderPolygons> renderShape(Projection p){
+		ArrayList<RenderPolygons> result = new ArrayList<RenderPolygons>();
+		if(faces == null) return result;
+		RenderPolygons temp;
+		for(int i = 0 ; i<faces.length ;i++){
+			for(int j = 0 ;j <4 ; j++){
+				m.transform(vertices[faces[i][j]], dst1);
+				p.projectPoint(dst1, end[j]);
+			}
+			temp = new RenderPolygons();
+			temp.renderToTrapezoid(end);
+			result.add(temp);			
+		}
+		return result;
+	}
+	
 	
 	void drawEdge(double[] point1, double[] point2, Graphics g, Projection proj){
 		m.transform(point1, dst1);

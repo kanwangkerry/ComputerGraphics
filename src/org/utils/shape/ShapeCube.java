@@ -1,7 +1,9 @@
 package org.utils.shape;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 
+import org.utils.render.RenderPolygons;
 import org.utils.transform.Projection;
 
 public class ShapeCube extends Geometry {
@@ -49,5 +51,7 @@ public class ShapeCube extends Geometry {
 			drawEdge(vertices[faces[i][3]], vertices[faces[i][0]], g, p);
 		}
 	}
+
+
 
 }
