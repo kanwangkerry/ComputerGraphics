@@ -2,16 +2,12 @@ package org.hw5;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import org.utils.BufferedApplet;
 import org.utils.shape.Geometry;
-import org.utils.shape.IGeometry;
 import org.utils.shape.ShapeCube;
 import org.utils.shape.ShapeCylinder;
 import org.utils.shape.ShapeNull;
-import org.utils.shape.ShapeSphere;
 import org.utils.transform.Projection;
 
 @SuppressWarnings("serial")
