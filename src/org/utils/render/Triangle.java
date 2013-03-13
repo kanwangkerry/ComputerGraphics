@@ -109,7 +109,16 @@ public class Triangle {
 			return true;
 		}
 		else return false;
-		
+	}
+	
+	public void renderTriangle(int pix[], int color, int W){
+		for(int y = yt ; y <= yb; y++){
+			int rx=this.getXR(y);
+			int rl = this.getXL(y);
+			for(int x = rl; x <= rx; x++){
+				pix[y*W+x] = color;
+			}
+		}
 	}
 
 }

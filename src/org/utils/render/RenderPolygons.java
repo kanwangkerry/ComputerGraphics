@@ -44,6 +44,13 @@ public class RenderPolygons {
 			}
 		}
 		return false;
-		
+	}
+	
+	public void colorPolygon(int pix[], int color, int W){
+		for(int i = 0 ; i < this.render.size() ;i++){
+			if(render.get(i).area >0){
+			render.get(i).renderTriangle(pix, color, W);
+			}
+		}
 	}
 }
