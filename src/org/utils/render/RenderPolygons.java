@@ -33,19 +33,7 @@ public class RenderPolygons {
 			render.addAll(x);
 		}
 	}
-	
-	public boolean isRendering(int x, int y){
-		Triangle temp;
-		for(int i = 0 ; i < render.size() ;i++){
-			if(render.get(i).area >0){
-				temp = render.get(i);
-				if(temp.isInTriangle(x, y))
-					return true;
-			}
-		}
-		return false;
-	}
-	
+		
 	public void colorPolygon(int pix[], int color, int W){
 		for(int i = 0 ; i < this.render.size() ;i++){
 			if(render.get(i).area >0){
