@@ -1,29 +1,31 @@
 package org.utils.shape;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 
-import org.utils.render.RenderPolygons;
 import org.utils.transform.Projection;
 
 public class ShapeCube extends Geometry {
 
 	@Override
 	public void globe(int M, int N) {
-		vertices = new double[][] { { 1, 1, 1 }, { 1, -1, 1 },
-				{ -1, -1, 1 }, { -1, 1, 1 }, { 1, 1, -1 },
-				{ 1, -1, -1 }, { -1, -1, -1 }, { -1, 1, -1 },
-				{ 1, 1, 1 }, { 1, -1, 1 }, { 1, -1, -1 },
-				{ 1, 1, -1 }, { -1, 1, 1 }, { -1, -1, 1 },
-				{ -1, -1, -1 }, { -1, 1, -1 }, { 1, 1, 1 },
-				{ -1, 1, 1 }, { -1, 1, -1 }, { 1, 1, -1 },
-				{ 1, -1, 1 }, { -1, -1, 1 }, { -1, -1, -1 },
-				{ 1, -1, -1 }, };
+		vertices = new double[][] { { 1, 1, 1, 1, 1, 1 },
+				{ 1, -1, 1, 1, -1, 1 }, { -1, -1, 1, -1, -1, 1 },
+				{ -1, 1, 1, -1, 1, 1 }, { 1, 1, -1, 1, 1, -1 },
+				{ 1, -1, -1, 1, -1, -1 }, { -1, -1, -1, -1, -1, -1 },
+				{ -1, 1, -1, -1, 1, -1 }, { 1, 1, 1, 1, 1, 1 },
+				{ 1, -1, 1, 1, -1, 1 }, { 1, -1, -1, 1, -1, -1 },
+				{ 1, 1, -1, 1, 1, -1 }, { -1, 1, 1, -1, 1, 1 },
+				{ -1, -1, 1, -1, -1, 1 }, { -1, -1, -1, -1, -1, -1 },
+				{ -1, 1, -1, -1, 1, -1 }, { 1, 1, 1, 1, 1, 1 },
+				{ -1, 1, 1, -1, 1, 1 }, { -1, 1, -1, -1, 1, -1 },
+				{ 1, 1, -1, 1, 1, -1 }, { 1, -1, 1, 1, -1, 1 },
+				{ -1, -1, 1, -1, -1, 1 }, { -1, -1, -1, -1, -1, -1 },
+				{ 1, -1, -1, 1, -1, -1 }, };
 		faces = new int[6][4];
 		for (int i = 0; i < faces.length; i++) {
 			faces[i] = new int[] { i * 4, i * 4 + 1, i * 4 + 2, i * 4 + 3 };
 		}
-		
+
 		this.m.identity();
 	}
 
@@ -51,7 +53,5 @@ public class ShapeCube extends Geometry {
 			drawEdge(vertices[faces[i][3]], vertices[faces[i][0]], g, p);
 		}
 	}
-
-
 
 }
