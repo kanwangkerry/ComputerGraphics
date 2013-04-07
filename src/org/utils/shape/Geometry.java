@@ -17,7 +17,7 @@ public abstract class Geometry implements IGeometry{
 	private double dst2[] = new double[3];
 	private int end1[] = new int[2];
 	private int end2[] = new int[2];
-	private int end[][] = new int[4][2];
+	private int end[][] = new int[4][5];
 	
 	private ArrayList<IGeometry> child = new ArrayList<IGeometry>();
 	
@@ -47,7 +47,7 @@ public abstract class Geometry implements IGeometry{
 		q.add(pointer);
 		while(!q.isEmpty()){
 			pointer = (Geometry) q.pollFirst();
-			s.addAll(pointer.renderShape(proj));
+			s.addAll(pointer.renderShapeWithColor(proj));
 			for(int i = 0 ; i < pointer.getNumChild() ;i++){
 				pointer.getChild(i).getMatrix().leftMultiply(pointer.getMatrix());
 				q.add(pointer.getChild(i));
@@ -62,7 +62,8 @@ public abstract class Geometry implements IGeometry{
 	public abstract void drawShape(Graphics g, Projection p);
 	
 	
-	public ArrayList<RenderPolygons> renderShape(Projection p){
+	public ArrayList<RenderPolygons> renderShapeWithColor(Projection p){
+		double zIndex[] = new double[4];
 		ArrayList<RenderPolygons> result = new ArrayList<RenderPolygons>();
 		if(faces == null) return result;
 		RenderPolygons temp;
@@ -70,12 +71,20 @@ public abstract class Geometry implements IGeometry{
 			for(int j = 0 ;j <4 ; j++){
 				m.transform(vertices[faces[i][j]], dst1);
 				p.projectPoint(dst1, end[j]);
+				this.setColor(dst1, end[j]);
+				zIndex[j] = p.getZIndex(dst1);
 			}
 			temp = new RenderPolygons();
-			temp.renderToTrapezoid(end);
+			temp.renderToTrapezoidWithColor(end, zIndex);
 			result.add(temp);			
 		}
 		return result;
+	}
+	
+	private void setColor(double[] vertice, int point[]){
+		point[2] = (int) ((vertice[3]+1.0)/2 * 255);
+		point[3] = (int) ((vertice[4]+1.0)/2 * 255);
+		point[4] = (int) ((vertice[5]+1.0)/2 * 255);
 	}
 	
 	
