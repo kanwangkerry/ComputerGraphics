@@ -13,7 +13,7 @@ public abstract class Geometry implements IGeometry{
 	int faces[][];
 	Matrix m = new Matrix();
 	
-	private double dst1[] = new double[3];
+	private double dst1[] = new double[6];
 	private double dst2[] = new double[3];
 	private int end1[] = new int[2];
 	private int end2[] = new int[2];

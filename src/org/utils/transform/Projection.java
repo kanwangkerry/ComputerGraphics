@@ -19,8 +19,8 @@ public class Projection {
 		double y = xyz[1];
 		double z = xyz[2];
 
-		pxy[0] = w / 2 + (int) (h * FL* x / (FL - z));
-		pxy[1] = h / 2 - (int) (h * FL* y / (FL - z));
+		pxy[0] = w / 2 + (int) (h * x / (FL - z));
+		pxy[1] = h / 2 - (int) (h * y / (FL - z));
 	}
 	
 	public double getZIndex(double[] xyz){
