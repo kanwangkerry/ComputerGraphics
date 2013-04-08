@@ -112,6 +112,12 @@ public class RenderingScene extends MISApplet {
 			}
 		}
 		
+		for(int i = 0 ; i < W ; i++){
+			for(int j = 0 ; j < H ;j++){
+				zBuffer[j*W+i] = -15.0;
+			}
+		}
+		
 		root.getMatrix().translate(0, -2, 0);
 		root.getMatrix().scale(1.8, 1.8, 1.8);
 		root.getMatrix().rotateY(alpha);
@@ -139,7 +145,7 @@ public class RenderingScene extends MISApplet {
 		}
 		color = pack(0xd2, 0xb1, 0x6f);
 		for(int j = 0 ; j < scene.size(); j++){
-			scene.get(j).colorPolygon(pix, color, W);
+			scene.get(j).colorPolygon(pix, color, W, zBuffer);
 		}
 	}
 }

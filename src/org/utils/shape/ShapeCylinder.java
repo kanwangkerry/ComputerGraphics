@@ -12,8 +12,8 @@ public class ShapeCylinder extends Geometry {
 		double u;
 		vertices = new double[M*2+M*2+2][6];
 		faces = new int[M*3][4];
-		vertices[M*4] = new double[] {0, 0, 1};
-		vertices[M*4+1] = new double[] {0, 0, -1};
+		vertices[M*4] = new double[] {0, 0, 1, 0, 0, 1};
+		vertices[M*4+1] = new double[] {0, 0, -1, 0, 0, -1};
 		for(int i = 0 ; i < M ; i++){
 			u = i/(double) M;
 			vertices[i*2] = new double[] {plotX(u, 1), plotY(u, 1), 1, plotX(u, 1), plotY(u, 1), 1};

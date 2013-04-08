@@ -35,10 +35,10 @@ public class RenderPolygons {
 		}
 	}
 		
-	public void colorPolygon(int pix[], int color, int W){
+	public void colorPolygon(int pix[], int color, int W, double zBuffer[]){
 		for(int i = 0 ; i < this.render.size() ;i++){
-			if(render.get(i).area >0){
-			render.get(i).renderTriangle(pix, color, W);
+			if(render.get(i).area != 0){
+			render.get(i).renderTriangle(pix, color, W, zBuffer);
 			}
 		}
 	}
