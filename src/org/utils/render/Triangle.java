@@ -45,15 +45,17 @@ public class Triangle {
 			zindex[2] = tempd;
 		}
 		if (point[0][1] > point[1][1]) {
-			System.arraycopy(temp, 0, point[0], 0, 5);
-			System.arraycopy(point[0], 0, point[1], 0, 5);
-			System.arraycopy(point[1], 0, temp, 0, 5);
+			System.arraycopy(point[0], 0, temp, 0, 5);
+			System.arraycopy(point[1], 0, point[0], 0, 5);
+			System.arraycopy(temp, 0, point[1], 0, 5);
 			tempd = zindex[0];
 			zindex[0] = zindex[1];
 			zindex[1] = tempd;
 		}
-		this.area = this.area();
+		
 		this.updatePoints();
+		this.makeAntiClock();
+		this.area = this.area();
 	}
 
 	static public ArrayList<Triangle> splitTriangle(Triangle src) {
@@ -176,15 +178,15 @@ public class Triangle {
 		double t = (y - yt) / ((double) yb - yt);
 		return (int) (colorlt[color] + t * (colorlb[color] - colorlt[color]));
 	}
-	
-	private double getZR(int y){
-		double t = (y-yt) / ((double) yb - yt);
-		return zrt + t * (zrb-zrt);
+
+	private double getZR(int y) {
+		double t = (y - yt) / ((double) yb - yt);
+		return zrt + t * (zrb - zrt);
 	}
-	
-	private double getZL(int y){
-		double t = (y-yt) / ((double) yb - yt);
-		return zlt + t * (zlb-zlt);
+
+	private double getZL(int y) {
+		double t = (y - yt) / ((double) yb - yt);
+		return zlt + t * (zlb - zlt);
 	}
 
 	public boolean isInTriangle(int x, int y) {
@@ -214,15 +216,44 @@ public class Triangle {
 			lColor[1] = this.getLColor(y, 1);
 			lColor[2] = this.getLColor(y, 2);
 			for (int x = lx; x < rx; x++) {
-				z = zl + (x-lx)*(zr - zl)/(rx - lx);
-				if(z > zBuffer[y*W + x])
-				
-				pix[y * W + x] = MISApplet.pack(lColor[0] + (x - lx)
-						* (rColor[0] - lColor[0]) / ( rx - lx),
-						lColor[1] + (x - lx) * (rColor[1] - lColor[1])
-								/ ( rx - lx), lColor[2] + (x - lx)
-								* (rColor[2] - lColor[2]) / ( rx - lx));
+				z = zl + (x - lx) * (zr - zl) / (rx - lx);
+				if (z > zBuffer[y * W + x]){
+					zBuffer[y*W+x] = z;
+
+					pix[y * W + x] = MISApplet.pack(lColor[0] + (x - lx)
+							* (rColor[0] - lColor[0]) / (rx - lx), lColor[1]
+							+ (x - lx) * (rColor[1] - lColor[1]) / (rx - lx),
+							lColor[2] + (x - lx) * (rColor[2] - lColor[2])
+									/ (rx - lx));
+				}
 			}
 		}
+	}
+	
+	private void makeAntiClock(){
+		double tempd;
+		int[] temp = new int[5];
+		if(point[0][1] == point[1][1] && point[0][0] < point[1][0]){
+			System.arraycopy(point[0], 0, temp, 0, 5);
+			System.arraycopy(point[1], 0, point[0], 0, 5);
+			System.arraycopy(temp, 0, point[1], 0, 5);
+			tempd = zindex[0];
+			zindex[0] = zindex[1];
+			zindex[1] = tempd;
+		}
+		else if(point[1][1] == point[2][1] && point[1][0] > point[2][0]){
+			System.arraycopy(point[1], 0, temp, 0, 5);
+			System.arraycopy(point[2], 0, point[1], 0, 5);
+			System.arraycopy(temp, 0, point[2], 0, 5);
+			tempd = zindex[1];
+			zindex[1] = zindex[2];
+			zindex[2] = tempd;
+		}
+	}
+
+	public String toString() {
+		return "[" + this.point[0][0] + ", " + this.point[0][1] + "]" + "["
+				+ this.point[1][0] + ", " + this.point[1][1] + "]" + "["
+				+ this.point[2][0] + ", " + this.point[2][1] + "]";
 	}
 }

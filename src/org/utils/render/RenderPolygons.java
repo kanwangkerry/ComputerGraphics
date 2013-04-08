@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 public class RenderPolygons {
 
-	ArrayList<Triangle> render = new ArrayList<Triangle>();
+	public ArrayList<Triangle> render = new ArrayList<Triangle>();
+	
+	public String toString(){
+		return render.toString();
+	}
 	
 	
 	public void renderToTrapezoidWithColor(int point[][], double zIndex[]) {

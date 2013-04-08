@@ -82,9 +82,10 @@ public abstract class Geometry implements IGeometry{
 	}
 	
 	private void setColor(double[] vertice, int point[]){
-		point[2] = (int) ((vertice[3]+1.0)/2 * 255);
-		point[3] = (int) ((vertice[4]+1.0)/2 * 255);
-		point[4] = (int) ((vertice[5]+1.0)/2 * 255);
+		double normal = Math.sqrt(vertice[3]*vertice[3] + vertice[4]*vertice[4] + vertice[5]*vertice[5]);
+		point[2] = (int) ((vertice[3]/normal+1.0)/2 * 255);
+		point[3] = (int) ((vertice[4]/normal+1.0)/2 * 255);
+		point[4] = (int) ((vertice[5]/normal+1.0)/2 * 255);
 	}
 	
 	
