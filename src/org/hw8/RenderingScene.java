@@ -1,4 +1,4 @@
-package org.hw6;
+package org.hw8;
 
 import java.util.ArrayList;
 
@@ -28,16 +28,25 @@ public class RenderingScene extends MISApplet {
 	int frameCount = 0;
 	double alpha;
 	
-	Light l[] = new Light[2];
-	double eye[] = new double[] {0, 0, 1.0};
-
+	Light[] l = new Light[2];
+	double[] eye = new double[]{0, 0, 1.0};
+	
+	double[] AColor = {0.2, 0, 0};
+	double[] DColor = {0.8, 0, 0};
+	double[] SColor = {.50, .50, .50};
+	double power = 10.0;
+	double[] AColor1 = {0.1, 0.05, 0.05};
+	double[] DColor1 = {0.82, 0.5, 0.44};
+	double[] SColor1 = {0.1, 0.1, 0.1};
+	double power1 = 10.0;
+	
 	public void create() {
 		root = new ShapeNull();
 		hand = new ShapeCube();
 		root.getMatrix().identity();
 		hand.getMatrix().identity();
 		ball.getMatrix().identity();
-
+		
 		root.addChild(hand);
 		root.addChild(ball);
 		hand.globe(20, 20);
@@ -84,6 +93,9 @@ public class RenderingScene extends MISApplet {
 			dactylus[i][2].getMatrix().translate(0, 0, length[i][2]);
 			dactylus[i][2].getMatrix().scale(1, 1, length[i][2]);
 		}
+		
+		Geometry.setMaterialFromRoot(root, AColor1, DColor1, SColor1, power);
+		Geometry.setMaterialFromRoot(ball, AColor, DColor, SColor, power);
 	}
 
 	@Override
@@ -91,6 +103,13 @@ public class RenderingScene extends MISApplet {
 		
 		proj = new Projection(W, H, 15.0);
 		alpha = 0;
+		
+		l[0] = new Light();
+		l[0].setLightDir(1.0, 1.0, .5);
+		l[0].setLightColor(1.0, 1.0, 1.0);
+		l[1] = new Light();
+		l[1].setLightDir(-1.0, -1.0, -.5);
+		l[1].setLightColor(1.0, 1.0, 1.0);
 	}
 
 	@Override

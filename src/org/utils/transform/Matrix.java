@@ -154,6 +154,11 @@ public class Matrix implements IMatrix {
 			dst[i+3] = tempD[i] / tempD[3];
 		}
 		
+		double normal = Math.sqrt(dst[3]*dst[3] + dst[4]*dst[4] + dst[5]*dst[5]);
+		for(int i = 0 ; i < 3; i++){
+			dst[i+3] = dst[i+3]/normal;
+		}
+		
 	}
 
 	@Override
