@@ -124,6 +124,12 @@ public class Matrix implements IMatrix {
 
 	}
 	
+	/**
+	 * This function is used to transform the normal of the vertice;
+	 * The method is the same as the lesson's notes.
+	 * @param src
+	 * @param dst
+	 */
 	private void transformNormal(double[] src, double[] dst){
 		for(int i = 0 ; i < 4 ; i++){
 			for(int j = 0 ; j < 4 ;j++){
@@ -161,8 +167,14 @@ public class Matrix implements IMatrix {
 		
 	}
 
+	/**
+	 * Transform a src vector into dst vector using this matrix.
+	 * The important thing is that this src includes the normal
+	 * of the vector, so you have to transform the vector also. 
+	 */
 	@Override
 	public void transform(double[] src, double[] dst) {
+		// Transform the vetice first.
 		double[] tempS = new double[4];
 		double[] tempD = new double[4];
 		for (int i = 0; i < 3; i++) {
@@ -180,6 +192,7 @@ public class Matrix implements IMatrix {
 			dst[i] = tempD[i] / tempD[3];
 		}
 		
+		// transform the normal of the vertice.
 		this.transformNormal(src, dst);
 		
 	}

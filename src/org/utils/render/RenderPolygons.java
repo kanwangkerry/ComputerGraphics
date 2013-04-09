@@ -10,7 +10,11 @@ public class RenderPolygons {
 		return render.toString();
 	}
 	
-	
+	/**
+	 * make a trapezoid into triangles. save all the triangles into the render array.
+	 * @param point
+	 * @param zIndex
+	 */
 	public void renderToTrapezoidWithColor(int point[][], double zIndex[]) {
 		ArrayList<Triangle> triangles = new ArrayList<Triangle>();
 		Triangle temp;
@@ -38,12 +42,17 @@ public class RenderPolygons {
 			render.addAll(x);
 		}
 	}
-		
+	
+	/**
+	 * Color a polygon. We only need to color every triangle.
+	 * @param pix
+	 * @param color
+	 * @param W
+	 * @param zBuffer
+	 */
 	public void colorPolygon(int pix[], int color, int W, double zBuffer[]){
 		for(int i = 0 ; i < this.render.size() ;i++){
-			//if(render.get(i).area != 0){
 			render.get(i).renderTriangle(pix, color, W, zBuffer);
-			//}
 		}
 	}
 }

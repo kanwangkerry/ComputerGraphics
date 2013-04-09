@@ -18,6 +18,7 @@ public class ShapeSphere extends Geometry {
 				u0 = ((double) m) / M;
 				u1 = ((double) (m + 1)) / M;
 
+				// vertice should contain a normal
 				vertices[m + n * (M + 1)] = new double[] { plotX(u0, v0),
 						plotY(u0, v0), plotZ(u0, v0), plotX(u0, v0),
 						plotY(u0, v0), plotZ(u0, v0) };

@@ -4,8 +4,19 @@ import java.util.ArrayList;
 
 import org.utils.MISApplet;
 
+/**
+ * Triangle Class, used to render on 2d.
+ * @author kerry
+ *
+ */
 public class Triangle {
+	/**
+	 * This point saves: x, y pixel and color
+	 */
 	int point[][] = new int[3][5];
+	/**
+	 * Save the index for the 3 vertices.
+	 */
 	double zindex[] = new double[3];
 	int area;
 	private int yt, yb, xlt, xrt, xlb, xrb;
@@ -17,6 +28,15 @@ public class Triangle {
 
 	private double zlt, zrt, zlb, zrb;
 
+	/**
+	 * Create a Triangle. Also need to update the area and top and bot info.
+	 * @param point1
+	 * @param point2
+	 * @param point3
+	 * @param zIndex1
+	 * @param zIndex2
+	 * @param zIndex3
+	 */
 	Triangle(int point1[], int point2[], int point3[], double zIndex1,
 			double zIndex2, double zIndex3) {
 		System.arraycopy(point1, 0, point[0], 0, 5);
@@ -58,6 +78,11 @@ public class Triangle {
 		this.area = this.area();
 	}
 
+	/**
+	 * Split a triangle into 2.
+	 * @param src
+	 * @return
+	 */
 	static public ArrayList<Triangle> splitTriangle(Triangle src) {
 		ArrayList<Triangle> result = new ArrayList<Triangle>();
 		if (src.point[1][1] == src.point[0][1]
@@ -94,6 +119,10 @@ public class Triangle {
 		return result;
 	}
 
+	/**
+	 * Figure out the area.
+	 * @return
+	 */
 	private int area() {
 		double area = 0;
 		area = (point[0][0] - point[1][0]) * (point[0][1] + point[1][1])
@@ -106,6 +135,9 @@ public class Triangle {
 		return (int) area;
 	}
 
+	/**
+	 * update the top and bot infor.
+	 */
 	private void updatePoints() {
 		if (point[0][1] < point[1][1]) {
 			this.yt = point[0][1];
@@ -200,6 +232,13 @@ public class Triangle {
 			return false;
 	}
 
+	/**
+	 * Render the triangle into the pix array in zBuffer.
+	 * @param pix
+	 * @param color
+	 * @param W
+	 * @param zBuffer
+	 */
 	public void renderTriangle(int pix[], int color, int W, double zBuffer[]) {
 		int[] rColor = new int[3];
 		int[] lColor = new int[3];
@@ -230,6 +269,9 @@ public class Triangle {
 		}
 	}
 	
+	/**
+	 * make the vertices into anti-clock order.
+	 */
 	private void makeAntiClock(){
 		double tempd;
 		int[] temp = new int[5];

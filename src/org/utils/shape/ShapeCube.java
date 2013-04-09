@@ -4,10 +4,16 @@ import java.awt.Graphics;
 
 import org.utils.transform.Projection;
 
+/**
+ * Geometry for cube.
+ * @author kerry
+ *
+ */
 public class ShapeCube extends Geometry {
 
 	@Override
 	public void globe(int M, int N) {
+		// vertices should contain the normal for each vertice.
 		vertices = new double[][] { { 1, 1, 1, 1, 1, 1 },
 				{ 1, -1, 1, 1, -1, 1 }, { -1, -1, 1, -1, -1, 1 },
 				{ -1, 1, 1, -1, 1, 1 }, { 1, 1, -1, 1, 1, -1 },
