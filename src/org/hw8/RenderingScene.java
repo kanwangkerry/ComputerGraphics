@@ -49,8 +49,8 @@ public class RenderingScene extends MISApplet {
 		
 		root.addChild(hand);
 		root.addChild(ball);
-		hand.globe(20, 20);
-		ball.globe(20, 20);
+		hand.globe(30, 30);
+		ball.globe(30, 30);
 
 		hand.getMatrix().scale(1, 1, 0.3);
 		ball.getMatrix().translate(-3, 0, 0);
@@ -77,19 +77,19 @@ public class RenderingScene extends MISApplet {
 			joint[i][0].getMatrix().translate(translate[i], 1, 0);
 			joint[i][0].getMatrix().rotateX(-Math.PI / 2);
 			joint[i][0].getMatrix().scale(.15, .15, 1);
-			dactylus[i][0].globe(20, 20);
+			dactylus[i][0].globe(30, 30);
 			dactylus[i][0].getMatrix().translate(0, 0, length[i][0]);
 			dactylus[i][0].getMatrix().scale(1, 1, length[i][0]);
 
 			joint[i][1].getMatrix().identity();
 			joint[i][1].getMatrix().translate(0, 0, 2 * length[i][0]);
-			dactylus[i][1].globe(20, 20);
+			dactylus[i][1].globe(30, 30);
 			dactylus[i][1].getMatrix().translate(0, 0, length[i][1]);
 			dactylus[i][1].getMatrix().scale(1, 1, length[i][1]);
 
 			joint[i][2].getMatrix().identity();
 			joint[i][2].getMatrix().translate(0, 0, 2 * length[i][1]);
-			dactylus[i][2].globe(20, 20);
+			dactylus[i][2].globe(30, 30);
 			dactylus[i][2].getMatrix().translate(0, 0, length[i][2]);
 			dactylus[i][2].getMatrix().scale(1, 1, length[i][2]);
 		}

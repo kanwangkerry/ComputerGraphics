@@ -215,7 +215,7 @@ public class Triangle {
 			lColor[0] = this.getLColor(y, 0);
 			lColor[1] = this.getLColor(y, 1);
 			lColor[2] = this.getLColor(y, 2);
-			for (int x = lx; x < rx; x++) {
+			for (int x = lx; x <= rx; x++) {
 				z = zl + (x - lx) * (zr - zl) / (rx - lx);
 				if (z > zBuffer[y * W + x]){
 					zBuffer[y*W+x] = z;
