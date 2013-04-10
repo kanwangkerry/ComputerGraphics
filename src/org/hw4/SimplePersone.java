@@ -4,10 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.utils.BufferedApplet;
-import org.utils.shape.Geometry;
-import org.utils.shape.ShapeCube;
-import org.utils.shape.ShapeCylinder;
-import org.utils.shape.ShapeSphere;
 import org.utils.transform.Projection;
 
 @SuppressWarnings("serial")

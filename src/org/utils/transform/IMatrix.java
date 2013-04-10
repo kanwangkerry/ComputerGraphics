@@ -1,5 +1,11 @@
 package org.utils.transform;
 
+/**
+ * Interface for a matrix.
+ * Including the methods that could be accessed publicly.
+ * @author kerry
+ *
+ */
 public interface IMatrix
 {
    public void identity();
