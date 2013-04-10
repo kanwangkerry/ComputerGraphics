@@ -1,6 +1,14 @@
 package org.utils.material;
 
+/**
+ * The class of material
+ * @author kerry
+ *
+ */
 public class Material {
+	/**
+	 * Colors of the material.
+	 */
 	double[] ambientColor = new double[3];
 	double[] diffuseColor = new double[3];
 	double[] specularColor = new double[3];
@@ -26,6 +34,14 @@ public class Material {
 		this.specularPower = power;
 	}
 	
+	/**
+	 * Calculate the color by eye, light, normal and this material. Save the result in 
+	 * dst[]
+	 * @param l
+	 * @param eye
+	 * @param normal
+	 * @param dst
+	 */
 	public void calcColor(Light l[], double eye[], double normal[], int dst[]){
 		double temp;
 		double result[] = new double[3];
@@ -33,6 +49,7 @@ public class Material {
 			result[i] = this.ambientColor[i];
 			normalV[i] = normal[i+3];
 		}
+		// loop over all the light to calculate the color.
 		for(int i = 0 ; i < l.length ; i++){
 			for(int j = 0 ; j < 3; j++){
 				tempColor[j] = 0;

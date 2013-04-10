@@ -131,7 +131,8 @@ public abstract class Geometry implements IGeometry {
 	}
 
 	/**
-	 * set color for hw6: it should use the normal to figure out the color.
+	 * set color for hw7: it should use the normal, light, eye
+	 * and material to figure out the color.
 	 * @param vertice
 	 * @param point
 	 * @param l
