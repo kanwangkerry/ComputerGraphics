@@ -125,6 +125,7 @@ public abstract class Geometry implements IGeometry {
 			}
 			temp = new RenderPolygons();
 			temp.renderToTrapezoidWithColor(end, zIndex);
+			temp.setGeometry(this);
 			result.add(temp);
 		}
 		return result;

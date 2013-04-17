@@ -2,13 +2,23 @@ package org.utils.render;
 
 import java.util.ArrayList;
 
+import org.utils.shape.Geometry;
+
 public class RenderPolygons {
 
 	public ArrayList<Triangle> render = new ArrayList<Triangle>();
+	private Geometry from;
+	public boolean isInGeometry(Geometry object){
+		return from == object;
+	}
+	public void setGeometry(Geometry obj){
+		this.from = obj;
+	}
 	
 	public String toString(){
 		return render.toString();
 	}
+	
 	
 	/**
 	 * make a trapezoid into triangles. save all the triangles into the render array.
