@@ -25,6 +25,7 @@ public class MISApplet extends Applet implements Runnable {
 		W = getBounds().width; // FIND THE RESOLUTION OF THE JAVA APPLET
 		H = getBounds().height;
 		pix = new int[W * H]; // ALLOCATE A FRAME BUFFER IMAGE
+		zBuffer = new double[W*H];
 		mis = new MemoryImageSource(W, H, pix, 0, W);
 		mis.setAnimated(true);
 		im = createImage(mis); // MAKE MEMORY IMAGE SOURCE FOR FRAME BUFFER
@@ -69,7 +70,7 @@ public class MISApplet extends Applet implements Runnable {
 			}
 	}
 
-	public int pack(int red, int grn, int blu) {
+	public static int pack(int red, int grn, int blu) {
 		return 255 << 24 | clip(red, 0, 255) << 16 | clip(grn, 0, 255) << 8
 				| clip(blu, 0, 255);
 	}
@@ -82,7 +83,7 @@ public class MISApplet extends Applet implements Runnable {
 		return x + W * y;
 	}
 
-	int clip(int t, int lo, int hi) {
+	static int clip(int t, int lo, int hi) {
 		return t < lo ? lo : t > hi ? hi : t;
 	}
 
@@ -95,6 +96,7 @@ public class MISApplet extends Applet implements Runnable {
 	// PRIVATE DATA
 
 	public int[] pix; // THE FRAME BUFFER ARRAY
+	public double[] zBuffer;
 
 	private MemoryImageSource mis; // MEMORY IMAGE SOURCE CONTAINING FRAME
 									// BUFFER

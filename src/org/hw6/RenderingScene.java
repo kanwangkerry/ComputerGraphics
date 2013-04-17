@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.utils.MISApplet;
 import org.utils.render.RenderPolygons;
-import org.utils.render.Triangle;
 import org.utils.shape.Geometry;
 import org.utils.shape.ShapeCube;
 import org.utils.shape.ShapeCylinder;
@@ -112,9 +111,18 @@ public class RenderingScene extends MISApplet {
 			}
 		}
 		
+		for(int i = 0 ; i < W ; i++){
+			for(int j = 0 ; j < H ;j++){
+				zBuffer[j*W+i] = -15.0;
+			}
+		}
+		
 		root.getMatrix().translate(0, -2, 0);
 		root.getMatrix().scale(1.8, 1.8, 1.8);
 		root.getMatrix().rotateY(alpha);
+		/**
+		 * Render to 2d, use this method. Save the result in scene array.
+		 */
 		Geometry.renderFromRoot(root, scene, proj);
 	}
 
@@ -138,8 +146,11 @@ public class RenderingScene extends MISApplet {
 			}
 		}
 		color = pack(0xd2, 0xb1, 0x6f);
+		/**
+		 *  Color all the polygon
+		 */
 		for(int j = 0 ; j < scene.size(); j++){
-			scene.get(j).colorPolygon(pix, color, W);
+			scene.get(j).colorPolygon(pix, color, W, zBuffer);
 		}
 	}
 }

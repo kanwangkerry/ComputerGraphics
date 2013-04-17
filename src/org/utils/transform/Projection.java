@@ -14,6 +14,11 @@ public class Projection {
 		this.FL = fl;		
 	}
 	
+	/**
+	 * Transform the vertice into a 2D point.
+	 * @param xyz
+	 * @param pxy
+	 */
 	public void projectPoint(double[] xyz, int[] pxy) {
 		double x = xyz[0];
 		double y = xyz[1];
@@ -23,6 +28,11 @@ public class Projection {
 		pxy[1] = h / 2 - (int) (h * y / (FL - z));
 	}
 	
+	/**
+	 * Get the z index of the vertice.
+	 * @param xyz
+	 * @return
+	 */
 	public double getZIndex(double[] xyz){
 		double z = xyz[2];
 		return FL * z /(FL -z);

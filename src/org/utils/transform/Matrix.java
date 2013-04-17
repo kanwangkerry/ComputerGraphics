@@ -6,6 +6,8 @@ public class Matrix implements IMatrix {
 	private static Matrix result = new Matrix();
 
 	private double[][] matrix = new double[4][4];
+	private double[][] inverted = new double[4][4];
+	private double[][] transpose = new double[4][4];
 
 	@Override
 	public void identity() {
@@ -121,9 +123,53 @@ public class Matrix implements IMatrix {
 		}
 
 	}
+	
+	/**
+	 * This function is used to transform the normal of the vertice;
+	 * The method is the same as the lesson's notes.
+	 * @param src
+	 * @param dst
+	 */
+	private void transformNormal(double[] src, double[] dst){
+		for(int i = 0 ; i < 4 ; i++){
+			for(int j = 0 ; j < 4 ;j++){
+				this.transpose[i][j] = this.matrix[i][j];
+			}
+		}
+		Invert.invert(this.transpose, this.inverted);
+		for(int i = 0 ; i < 4; i++){
+			for(int j = 0 ; j  < 4 ; j++){
+				this.transpose[i][j] = this.inverted[j][i];
+			}
+		}
+		
+		double[] tempS = new double[4];
+		double[] tempD = new double[4];
+		for (int i = 0; i < 3; i++) {
+			tempS[i] = src[i+3];
+		}
+		tempS[3] = 1;
+		for (int i = 0; i < 4; i++) {
+			double temp = 0;
+			for (int j = 0; j < 4; j++) {
+				temp += transpose[i][j] * tempS[j];
+			}
+			tempD[i] = temp;
+		}
+		for (int i = 0; i < 3; i++) {
+			dst[i+3] = tempD[i] / tempD[3];
+		}
+		
+	}
 
+	/**
+	 * Transform a src vector into dst vector using this matrix.
+	 * The important thing is that this src includes the normal
+	 * of the vector, so you have to transform the vector also. 
+	 */
 	@Override
 	public void transform(double[] src, double[] dst) {
+		// Transform the vetice first.
 		double[] tempS = new double[4];
 		double[] tempD = new double[4];
 		for (int i = 0; i < 3; i++) {
@@ -140,5 +186,9 @@ public class Matrix implements IMatrix {
 		for (int i = 0; i < 3; i++) {
 			dst[i] = tempD[i] / tempD[3];
 		}
+		
+		// transform the normal of the vertice.
+		this.transformNormal(src, dst);
+		
 	}
 }

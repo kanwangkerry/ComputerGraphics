@@ -19,14 +19,28 @@ public abstract class Geometry implements IGeometry{
 	private int end2[] = new int[2];
 	private int end[][] = new int[4][5];
 	
+	/**
+	 * Maintian the child list.
+	 */
 	private ArrayList<IGeometry> child = new ArrayList<IGeometry>();
 	
+	/**
+	 * abstract functions, need to be implemented by the subclass.
+	 * @param M
+	 * @param N
+	 */
 	public abstract void globe(int M, int N);
 	//v is in the latitude, u is in the longitude 
 	abstract double plotX(double u, double v);
 	abstract double plotY(double u, double v);
 	abstract double plotZ(double u, double v);
 	
+	/**
+	 * Used in hw4, draw the edge of the geometry from root.
+	 * @param root
+	 * @param g
+	 * @param proj
+	 */
 	public static void drawFromRoot(Geometry root, Graphics g, Projection proj){
 		Geometry pointer = root;
 		LinkedList<IGeometry> q = new LinkedList<IGeometry>();
@@ -41,6 +55,15 @@ public abstract class Geometry implements IGeometry{
 		}
 	}
 	
+	/**
+	 * Used in and after hw5: used to render the faces of a geometry into 2d faces
+	 * so we can render it in Z-buffer method. This function mainly focus on traverse
+	 * the geometry tree structure, and call renderShapWithColor to do actual
+	 * render jobs.
+	 * @param root
+	 * @param s
+	 * @param proj
+	 */
 	public static void renderFromRoot(Geometry root, ArrayList<RenderPolygons> s, Projection proj){
 		Geometry pointer = root;
 		LinkedList<IGeometry> q = new LinkedList<IGeometry>();
@@ -61,7 +84,16 @@ public abstract class Geometry implements IGeometry{
 	
 	public abstract void drawShape(Graphics g, Projection p);
 	
-	
+	/**
+	 * Actual render jobs. This is the important function for hw5 and later HWs.
+	 * For each face of the geometry, it firstly transform it into a 2d face, and
+	 * at the same time figure out the color and z-index of each vertex of this face.
+	 * Then, we render it to trapezoids and then into triangles.
+	 * At last, we will get a list of RenderPolygons, and each polygon should contains
+	 * some triangles and should be able to render use a z-buffer method.
+	 * @param p
+	 * @return
+	 */
 	public ArrayList<RenderPolygons> renderShapeWithColor(Projection p){
 		double zIndex[] = new double[4];
 		ArrayList<RenderPolygons> result = new ArrayList<RenderPolygons>();
@@ -81,10 +113,16 @@ public abstract class Geometry implements IGeometry{
 		return result;
 	}
 	
+	/**
+	 * set color for hw6: it should use the normal to figure out the color.
+	 * @param vertice
+	 * @param point
+	 */
 	private void setColor(double[] vertice, int point[]){
-		point[2] = (int) ((vertice[3]+1.0)/2 * 255);
-		point[3] = (int) ((vertice[4]+1.0)/2 * 255);
-		point[4] = (int) ((vertice[5]+1.0)/2 * 255);
+		double normal = Math.sqrt(vertice[3]*vertice[3] + vertice[4]*vertice[4] + vertice[5]*vertice[5]);
+		point[2] = (int) ((vertice[3]/normal+1.0)/2 * 255);
+		point[3] = (int) ((vertice[4]/normal+1.0)/2 * 255);
+		point[4] = (int) ((vertice[5]/normal+1.0)/2 * 255);
 	}
 	
 	
