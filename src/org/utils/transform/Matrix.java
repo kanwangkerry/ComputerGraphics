@@ -188,7 +188,8 @@ public class Matrix implements IMatrix {
 		}
 		
 		// transform the normal of the vertice.
+//		System.out.println(dst[3] + " " + dst[4] + "" + dst[5]);
 		this.transformNormal(src, dst);
-		
+//		System.out.println(dst[3] + " " + dst[4] + "" + dst[5]);
 	}
 }
