@@ -130,6 +130,11 @@ public abstract class Geometry implements IGeometry {
 		return result;
 	}
 
+	private void setColorNormal(double[] vertice, int point[])
+	{
+		
+		
+	}
 	/**
 	 * set color for hw7: it should use the normal, light, eye
 	 * and material to figure out the color.

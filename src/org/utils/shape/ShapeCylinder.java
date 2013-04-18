@@ -17,12 +17,10 @@ public class ShapeCylinder extends Geometry {
 		for(int i = 0 ; i < M ; i++){
 			u = i/(double) M;
 			// calculate the vertice and normal on the circle
-			// calculate the vertice and normal on the circle
 			vertices[i*2] = new double[] {plotX(u, 1), plotY(u, 1), 1, plotX(u, 1), plotY(u, 1), 0};
 			vertices[i*2+1] = new double[] {plotX(u, 1), plotY(u, 1), -1, plotX(u, 1), plotY(u, 1), 0};
 			faces[i] = new int[] {2*i, 2*i+1, (2*(i+1)+1)%(M*2), (2*(i+1))%(M*2)};
 			
-			// calculate the vertice and normal on the end face
 			// calculate the vertice and normal on the end face
 			vertices[M*2+i*2] = new double[] {plotX(u, 1), plotY(u, 1), 1, 0, 0, 1};
 			vertices[M*2+i*2+1] = new double[] {plotX(u, 1), plotY(u, 1), -1, 0, 0, -1};
