@@ -107,26 +107,6 @@ public class RenderingScene extends MISApplet {
 		alpha = speedCirclePerSecond * 2 * Math.PI
 				* ((frameCount) / (double) 20);
 		frameCount = (frameCount + 1 + 200) % 200;
-		for (int i = 0; i < 4; i++) {
-			joint[i][0].getMatrix().rotateX(Math.PI / 5);
-//			joint[i][1].getMatrix().rotateX(Math.PI / 2);
-//			joint[i][2].getMatrix().rotateX(Math.PI / 2);
-		}
-		
-//		if (alpha < Math.PI) {
-//			for (int i = 0; i < 4; i++) {
-//				joint[i][0].getMatrix().rotateX(alpha / 2);
-//				joint[i][1].getMatrix().rotateX(alpha / 2);
-//				joint[i][2].getMatrix().rotateX(alpha / 2);
-//			}
-//		} else {
-//			for (int i = 0; i < 4; i++) {
-//				joint[i][0].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
-//				joint[i][1].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
-//				joint[i][2].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
-//			}
-//		}
-		
 		for(int i = 0 ; i < W ; i++){
 			for(int j = 0 ; j < H ;j++){
 				zBuffer[j*W+i] = -15.0;
