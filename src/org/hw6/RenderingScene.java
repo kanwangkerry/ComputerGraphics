@@ -28,58 +28,69 @@ public class RenderingScene extends MISApplet {
 	double alpha;
 
 	public void create() {
-		root = new ShapeNull();
-		hand = new ShapeCube();
-		root.getMatrix().identity();
-		hand.getMatrix().identity();
-		ball.getMatrix().identity();
+			root = new ShapeNull();
+			hand = new ShapeCube();
+			root.getMatrix().identity();
+			hand.getMatrix().identity();
+			ball.getMatrix().identity();
 
-		root.addChild(hand);
-		root.addChild(ball);
-		hand.globe(20, 20);
-		ball.globe(20, 20);
+			root.addChild(hand);
+			root.addChild(ball);
+			hand.globe(30, 30);
+			ball.globe(30, 30);
 
-		hand.getMatrix().scale(1, 1, 0.3);
-		ball.getMatrix().translate(-3, 0, 0);
+			hand.getMatrix().scale(1, 1, 0.3);
+			ball.getMatrix().translate(-3, 0, 0);
 
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 3; j++) {
-				joint[i][j] = new ShapeNull();
-				dactylus[i][j] = new ShapeCylinder();
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 3; j++) {
+					joint[i][j] = new ShapeNull();
+					dactylus[i][j] = new ShapeCylinder();
+				}
 			}
-		}
-		for (int i = 0; i < 4; i++) {
-			root.addChild(joint[i][0]);
-			joint[i][0].addChild(joint[i][1]);
-			joint[i][0].addChild(dactylus[i][0]);
-			joint[i][1].addChild(joint[i][2]);
-			joint[i][1].addChild(dactylus[i][1]);
-			joint[i][2].addChild(dactylus[i][2]);
-		}
-		double translate[] = { -.8, -.3, .3, .8 };
-		double length[][] = { { .6, .5, .3 }, { .7, .5, .3 }, { .5, .4, .3 },
-				{ .3, .3, .2 } };
-		for (int i = 0; i < 4; i++) {
-			joint[i][0].getMatrix().identity();
-			joint[i][0].getMatrix().translate(translate[i], 1, 0);
-			joint[i][0].getMatrix().rotateX(-Math.PI / 2);
-			joint[i][0].getMatrix().scale(.15, .15, 1);
-			dactylus[i][0].globe(20, 20);
-			dactylus[i][0].getMatrix().translate(0, 0, length[i][0]);
-			dactylus[i][0].getMatrix().scale(1, 1, length[i][0]);
+			for (int i = 0; i < 4; i++) {
+				root.addChild(joint[i][0]);
+				joint[i][0].addChild(joint[i][1]);
+				joint[i][0].addChild(dactylus[i][0]);
+				joint[i][1].addChild(joint[i][2]);
+				joint[i][1].addChild(dactylus[i][1]);
+				joint[i][2].addChild(dactylus[i][2]);
+			}
+			double translate[] = { -.8, -.3, .3, .8 };
+			double length[][] = { { .6, .5, .3 }, { .7, .5, .3 }, { .5, .4, .3 },
+					{ .3, .3, .2 } };
+			for (int i = 0; i < 4; i++) {
+				joint[i][0].getMatrix().identity();
+				joint[i][0].getMatrix().translate(translate[i], 1, 0);
+				if (alpha < Math.PI)
+					joint[i][0].getMatrix().rotateX(alpha / 2);
+				else
+					joint[i][0].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+				joint[i][0].getMatrix().rotateX(-Math.PI / 2);
+				dactylus[i][0].globe(30, 30);
+				dactylus[i][0].getMatrix().translate(0, 0, length[i][0]);
+				dactylus[i][0].getMatrix().scale(.15, .15, length[i][0]);
 
-			joint[i][1].getMatrix().identity();
-			joint[i][1].getMatrix().translate(0, 0, 2 * length[i][0]);
-			dactylus[i][1].globe(20, 20);
-			dactylus[i][1].getMatrix().translate(0, 0, length[i][1]);
-			dactylus[i][1].getMatrix().scale(1, 1, length[i][1]);
+				joint[i][1].getMatrix().identity();
+				joint[i][1].getMatrix().translate(0, 0, 2 * length[i][0]);
+				if (alpha < Math.PI)
+					joint[i][1].getMatrix().rotateX(alpha / 2);
+				else
+					joint[i][1].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+				dactylus[i][1].globe(30, 30);
+				dactylus[i][1].getMatrix().translate(0, 0, length[i][1]);
+				dactylus[i][1].getMatrix().scale(.15, .15, length[i][1]);
 
-			joint[i][2].getMatrix().identity();
-			joint[i][2].getMatrix().translate(0, 0, 2 * length[i][1]);
-			dactylus[i][2].globe(20, 20);
-			dactylus[i][2].getMatrix().translate(0, 0, length[i][2]);
-			dactylus[i][2].getMatrix().scale(1, 1, length[i][2]);
-		}
+				joint[i][2].getMatrix().identity();
+				joint[i][2].getMatrix().translate(0, 0, 2 * length[i][1]);
+				if (alpha < Math.PI)
+					joint[i][2].getMatrix().rotateX(alpha / 2);
+				else
+					joint[i][2].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+				dactylus[i][2].globe(30, 30);
+				dactylus[i][2].getMatrix().translate(0, 0, length[i][2]);
+				dactylus[i][2].getMatrix().scale(.15, .15, length[i][2]);
+			}
 	}
 
 	@Override
