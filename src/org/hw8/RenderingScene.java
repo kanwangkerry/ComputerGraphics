@@ -27,26 +27,26 @@ public class RenderingScene extends MISApplet {
 	double speedCirclePerSecond = 0.1;
 	int frameCount = 0;
 	double alpha;
-	
+
 	Light[] l = new Light[2];
-	double[] eye = new double[]{0, 0, 1.0};
-	
-	double[] AColor = {0.2, 0, 0};
-	double[] DColor = {0.8, 0, 0};
-	double[] SColor = {1.0, 1.0, 1.0};
+	double[] eye = new double[] { 0, 0, 1.0 };
+
+	double[] AColor = { 0.2, 0, 0 };
+	double[] DColor = { 0.8, 0, 0 };
+	double[] SColor = { 1.0, 1.0, 1.0 };
 	double power = 10.0;
-	double[] AColor1 = {0.1, 0.05, 0.05};
-	double[] DColor1 = {0.82, 0.5, 0.44};
-	double[] SColor1 = {0.3, 0.3, 0.3};
+	double[] AColor1 = { 0.1, 0.05, 0.05 };
+	double[] DColor1 = { 0.82, 0.5, 0.44 };
+	double[] SColor1 = { 0.3, 0.3, 0.3 };
 	double power1 = 10.0;
-	
+
 	public void create() {
 		root = new ShapeNull();
 		hand = new ShapeCube();
 		root.getMatrix().identity();
 		hand.getMatrix().identity();
 		ball.getMatrix().identity();
-		
+
 		root.addChild(hand);
 		root.addChild(ball);
 		hand.globe(30, 30);
@@ -75,35 +75,46 @@ public class RenderingScene extends MISApplet {
 		for (int i = 0; i < 4; i++) {
 			joint[i][0].getMatrix().identity();
 			joint[i][0].getMatrix().translate(translate[i], 1, 0);
+			if (alpha < Math.PI)
+				joint[i][0].getMatrix().rotateX(alpha / 2);
+			else
+				joint[i][0].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
 			joint[i][0].getMatrix().rotateX(-Math.PI / 2);
-			joint[i][0].getMatrix().scale(.15, .15, 1);
 			dactylus[i][0].globe(30, 30);
 			dactylus[i][0].getMatrix().translate(0, 0, length[i][0]);
-			dactylus[i][0].getMatrix().scale(1, 1, length[i][0]);
+			dactylus[i][0].getMatrix().scale(.15, .15, length[i][0]);
 
 			joint[i][1].getMatrix().identity();
 			joint[i][1].getMatrix().translate(0, 0, 2 * length[i][0]);
+			if (alpha < Math.PI)
+				joint[i][1].getMatrix().rotateX(alpha / 2);
+			else
+				joint[i][1].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
 			dactylus[i][1].globe(30, 30);
 			dactylus[i][1].getMatrix().translate(0, 0, length[i][1]);
-			dactylus[i][1].getMatrix().scale(1, 1, length[i][1]);
+			dactylus[i][1].getMatrix().scale(.15, .15, length[i][1]);
 
 			joint[i][2].getMatrix().identity();
 			joint[i][2].getMatrix().translate(0, 0, 2 * length[i][1]);
+			if (alpha < Math.PI)
+				joint[i][2].getMatrix().rotateX(alpha / 2);
+			else
+				joint[i][2].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
 			dactylus[i][2].globe(30, 30);
 			dactylus[i][2].getMatrix().translate(0, 0, length[i][2]);
-			dactylus[i][2].getMatrix().scale(1, 1, length[i][2]);
+			dactylus[i][2].getMatrix().scale(.15, .15, length[i][2]);
 		}
-		
+
 		Geometry.setMaterialFromRoot(root, AColor1, DColor1, SColor1, power);
 		Geometry.setMaterialFromRoot(ball, AColor, DColor, SColor, power);
 	}
 
 	@Override
 	public void initialize() {
-		
+
 		proj = new Projection(W, H, 15.0);
 		alpha = 0;
-		
+
 		l[0] = new Light();
 		l[0].setLightDir(0.2, 1.0, .2);
 		l[0].setLightColor(1.0, 1.0, 1.0);
@@ -114,32 +125,19 @@ public class RenderingScene extends MISApplet {
 
 	@Override
 	public void initFrame(double time) {
-		this.create();
+
 		scene = new ArrayList<RenderPolygons>();
 		alpha = speedCirclePerSecond * 2 * Math.PI
 				* ((frameCount) / (double) 20);
 		frameCount = (frameCount + 1 + 200) % 200;
-		
-		if (alpha < Math.PI) {
-			for (int i = 0; i < 4; i++) {
-				joint[i][0].getMatrix().rotateX(alpha / 2);
-				joint[i][1].getMatrix().rotateX(alpha / 2);
-				joint[i][2].getMatrix().rotateX(alpha / 2);
-			}
-		} else {
-			for (int i = 0; i < 4; i++) {
-				joint[i][0].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
-				joint[i][1].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
-				joint[i][2].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+		this.create();
+
+		for (int i = 0; i < W; i++) {
+			for (int j = 0; j < H; j++) {
+				zBuffer[j * W + i] = -15.0;
 			}
 		}
-		
-		for(int i = 0 ; i < W ; i++){
-			for(int j = 0 ; j < H ;j++){
-				zBuffer[j*W+i] = -15.0;
-			}
-		}
-		
+
 		root.getMatrix().translate(0, -2, 0);
 		root.getMatrix().scale(1.8, 1.8, 1.8);
 		root.getMatrix().rotateY(alpha);
@@ -159,14 +157,14 @@ public class RenderingScene extends MISApplet {
 		int rgb[] = new int[3];
 		int color = 0;
 		int i = 0;
-		for (int y = 0; y < H; y++){
+		for (int y = 0; y < H; y++) {
 			for (int x = 0; x < W; x++) { // COMPUTE COLOR FOR EACH PIXEL
 				setPixel(x, y, rgb);
 				pix[i++] = pack(rgb[0], rgb[1], rgb[2]);
 			}
 		}
 		color = pack(0xd2, 0xb1, 0x6f);
-		for(int j = 0 ; j < scene.size(); j++){
+		for (int j = 0; j < scene.size(); j++) {
 			scene.get(j).colorPolygon(pix, color, W, zBuffer);
 		}
 	}
