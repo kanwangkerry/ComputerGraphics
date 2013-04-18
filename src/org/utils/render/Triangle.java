@@ -43,8 +43,8 @@ public class Triangle {
 		System.arraycopy(point2, 0, point[1], 0, 5);
 		System.arraycopy(point3, 0, point[2], 0, 5);
 		zindex[0] = zIndex1;
-		zindex[1] = zIndex1;
-		zindex[2] = zIndex1;
+		zindex[1] = zIndex2;
+		zindex[2] = zIndex3;
 
 		int temp[] = new int[5];
 		double tempd = 0;
@@ -98,16 +98,16 @@ public class Triangle {
 			newPoint[0] = (int) ((src.point[1][1] - src.point[2][1]) * k + src.point[2][0]);
 			newPoint[2] = (int) ((src.point[1][1] - src.point[2][1])
 					* (src.point[0][2] - src.point[2][2])
-					/ ((double) src.point[0][1] - src.point[2][1]) + src.point[2][2]);
+					/ ((double) src.point[0][1] - src.point[2][1])) + src.point[2][2];
 			newPoint[3] = (int) ((src.point[1][1] - src.point[2][1])
 					* (src.point[0][3] - src.point[2][3])
-					/ ((double) src.point[0][1] - src.point[2][1]) + src.point[2][3]);
+					/ ((double) src.point[0][1] - src.point[2][1])) + src.point[2][3];
 			newPoint[4] = (int) ((src.point[1][1] - src.point[2][1])
 					* (src.point[0][4] - src.point[2][4])
-					/ ((double) src.point[0][1] - src.point[2][1]) + src.point[2][4]);
-			newZIndex = (int) ((src.zindex[1] - src.zindex[2])
+					/ ((double) src.point[0][1] - src.point[2][1])) + src.point[2][4];
+			newZIndex = (((double) src.point[1][1] - src.point[2][1])
 					* (src.zindex[0] - src.zindex[2])
-					/ ((double) src.point[0][1] - src.point[2][1]) + src.zindex[2]);
+					/ ((double) src.point[0][1] - src.point[2][1])) + src.zindex[2];
 
 			temp = new Triangle(src.point[0], src.point[1], newPoint,
 					src.zindex[0], src.zindex[1], newZIndex);
@@ -243,6 +243,7 @@ public class Triangle {
 		int[] rColor = new int[3];
 		int[] lColor = new int[3];
 		double zl, zr, z;
+		
 		for (int y = yt; y <= yb; y++) {
 			int rx = this.getXR(y);
 			int lx = this.getXL(y);
