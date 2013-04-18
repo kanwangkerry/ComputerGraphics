@@ -43,8 +43,8 @@ public class Triangle {
 		System.arraycopy(point2, 0, point[1], 0, 5);
 		System.arraycopy(point3, 0, point[2], 0, 5);
 		zindex[0] = zIndex1;
-		zindex[1] = zIndex1;
-		zindex[2] = zIndex1;
+		zindex[1] = zIndex2;
+		zindex[2] = zIndex3;
 
 		int temp[] = new int[5];
 		double tempd = 0;
