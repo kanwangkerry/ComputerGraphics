@@ -75,11 +75,10 @@ public class RenderingScene extends MISApplet {
 		for (int i = 0; i < 4; i++) {
 			joint[i][0].getMatrix().identity();
 			joint[i][0].getMatrix().translate(translate[i], 1, 0);
-			joint[i][0].getMatrix().rotateX(Math.PI / 2);
-//			if (alpha < Math.PI)
-//				joint[i][0].getMatrix().rotateX(alpha / 2);
-//			else
-//				joint[i][0].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+			if (alpha < Math.PI)
+				joint[i][0].getMatrix().rotateX(alpha / 2);
+			else
+				joint[i][0].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
 			joint[i][0].getMatrix().rotateX(-Math.PI / 2);
 			dactylus[i][0].globe(30, 30);
 			dactylus[i][0].getMatrix().translate(0, 0, length[i][0]);
@@ -87,20 +86,20 @@ public class RenderingScene extends MISApplet {
 
 			joint[i][1].getMatrix().identity();
 			joint[i][1].getMatrix().translate(0, 0, 2 * length[i][0]);
-//			if (alpha < Math.PI)
-//				joint[i][1].getMatrix().rotateX(alpha / 2);
-//			else
-//				joint[i][1].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+			if (alpha < Math.PI)
+				joint[i][1].getMatrix().rotateX(alpha / 2);
+			else
+				joint[i][1].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
 			dactylus[i][1].globe(30, 30);
 			dactylus[i][1].getMatrix().translate(0, 0, length[i][1]);
 			dactylus[i][1].getMatrix().scale(.15, .15, length[i][1]);
 
 			joint[i][2].getMatrix().identity();
 			joint[i][2].getMatrix().translate(0, 0, 2 * length[i][1]);
-//			if (alpha < Math.PI)
-//				joint[i][2].getMatrix().rotateX(alpha / 2);
-//			else
-//				joint[i][2].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+			if (alpha < Math.PI)
+				joint[i][2].getMatrix().rotateX(alpha / 2);
+			else
+				joint[i][2].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
 			dactylus[i][2].globe(30, 30);
 			dactylus[i][2].getMatrix().translate(0, 0, length[i][2]);
 			dactylus[i][2].getMatrix().scale(.15, .15, length[i][2]);
