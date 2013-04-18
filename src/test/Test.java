@@ -1,4 +1,4 @@
-package org.hw8;
+package test;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import org.utils.shape.ShapeSphere;
 import org.utils.transform.Projection;
 
 @SuppressWarnings("serial")
-public class RenderingScene extends MISApplet {
+public class Test extends MISApplet {
 	ArrayList<RenderPolygons> scene;
 	Projection proj = new Projection(W, H, 15.0);
 
@@ -48,63 +48,61 @@ public class RenderingScene extends MISApplet {
 		ball.getMatrix().identity();
 
 		root.addChild(hand);
-		root.addChild(ball);
-		hand.globe(30, 30);
-		ball.globe(30, 30);
+		hand.globe(20, 20);
+		ball.globe(20, 20);
 
-		hand.getMatrix().scale(1, 1, 0.3);
-		ball.getMatrix().translate(-3, 0, 0);
+		hand.getMatrix().scale(1, 1, 1);
+		ball.getMatrix().translate(0, 1, 0);
+		//ball.getMatrix().scale(.5, .5, .5);
+		//hand.addChild(ball);
 
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 3; j++) {
-				joint[i][j] = new ShapeNull();
-				dactylus[i][j] = new ShapeCylinder();
-			}
-		}
-		for (int i = 0; i < 4; i++) {
-			root.addChild(joint[i][0]);
-			joint[i][0].addChild(joint[i][1]);
-			joint[i][0].addChild(dactylus[i][0]);
-			joint[i][1].addChild(joint[i][2]);
-			joint[i][1].addChild(dactylus[i][1]);
-			joint[i][2].addChild(dactylus[i][2]);
-		}
-		double translate[] = { -.8, -.3, .3, .8 };
-		double length[][] = { { .6, .5, .3 }, { .7, .5, .3 }, { .5, .4, .3 },
-				{ .3, .3, .2 } };
-		for (int i = 0; i < 4; i++) {
-			joint[i][0].getMatrix().identity();
-			joint[i][0].getMatrix().translate(translate[i], 1, 0);
-			joint[i][0].getMatrix().rotateX(Math.PI / 2);
-//			if (alpha < Math.PI)
-//				joint[i][0].getMatrix().rotateX(alpha / 2);
-//			else
-//				joint[i][0].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
-			joint[i][0].getMatrix().rotateX(-Math.PI / 2);
-			dactylus[i][0].globe(30, 30);
-			dactylus[i][0].getMatrix().translate(0, 0, length[i][0]);
-			dactylus[i][0].getMatrix().scale(.15, .15, length[i][0]);
-
-			joint[i][1].getMatrix().identity();
-			joint[i][1].getMatrix().translate(0, 0, 2 * length[i][0]);
-//			if (alpha < Math.PI)
-//				joint[i][1].getMatrix().rotateX(alpha / 2);
-//			else
-//				joint[i][1].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
-			dactylus[i][1].globe(30, 30);
-			dactylus[i][1].getMatrix().translate(0, 0, length[i][1]);
-			dactylus[i][1].getMatrix().scale(.15, .15, length[i][1]);
-
-			joint[i][2].getMatrix().identity();
-			joint[i][2].getMatrix().translate(0, 0, 2 * length[i][1]);
-//			if (alpha < Math.PI)
-//				joint[i][2].getMatrix().rotateX(alpha / 2);
-//			else
-//				joint[i][2].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
-			dactylus[i][2].globe(30, 30);
-			dactylus[i][2].getMatrix().translate(0, 0, length[i][2]);
-			dactylus[i][2].getMatrix().scale(.15, .15, length[i][2]);
-		}
+//		for (int i = 0; i < 4; i++) {
+//			for (int j = 0; j < 3; j++) {
+//				joint[i][j] = new ShapeNull();
+//				dactylus[i][j] = new ShapeCylinder();
+//			}
+//		}
+//		for (int i = 0; i < 4; i++) {
+//			root.addChild(joint[i][0]);
+//			joint[i][0].addChild(joint[i][1]);
+//			joint[i][0].addChild(dactylus[i][0]);
+//		}
+//		double translate[] = { -.8, -.3, .3, .8 };
+//		double length[][] = { { .6, .5, .3 }, { .7, .5, .3 }, { .5, .4, .3 },
+//				{ .3, .3, .2 } };
+//		for (int i = 0; i < 4; i++) {
+//			joint[i][0].getMatrix().identity();
+//			joint[i][0].getMatrix().translate(translate[i], 1, 0);
+//			joint[i][0].getMatrix().rotateX(Math.PI / 2);
+////			if (alpha < Math.PI)
+////				joint[i][0].getMatrix().rotateX(alpha / 2);
+////			else
+////				joint[i][0].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+//			joint[i][0].getMatrix().rotateX(-Math.PI / 2);
+//			dactylus[i][0].globe(30, 30);
+//			dactylus[i][0].getMatrix().translate(0, 0, length[i][0]);
+//			dactylus[i][0].getMatrix().scale(.15, .15, length[i][0]);
+//
+//			joint[i][1].getMatrix().identity();
+//			joint[i][1].getMatrix().translate(0, 0, 2 * length[i][0]);
+////			if (alpha < Math.PI)
+////				joint[i][1].getMatrix().rotateX(alpha / 2);
+////			else
+////				joint[i][1].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+//			dactylus[i][1].globe(30, 30);
+//			dactylus[i][1].getMatrix().translate(0, 0, length[i][1]);
+//			dactylus[i][1].getMatrix().scale(.15, .15, length[i][1]);
+//
+//			joint[i][2].getMatrix().identity();
+//			joint[i][2].getMatrix().translate(0, 0, 2 * length[i][1]);
+////			if (alpha < Math.PI)
+////				joint[i][2].getMatrix().rotateX(alpha / 2);
+////			else
+////				joint[i][2].getMatrix().rotateX((2 * Math.PI - alpha) / 2);
+//			dactylus[i][2].globe(30, 30);
+//			dactylus[i][2].getMatrix().translate(0, 0, length[i][2]);
+//			dactylus[i][2].getMatrix().scale(.15, .15, length[i][2]);
+//		}
 
 		Geometry.setMaterialFromRoot(root, AColor1, DColor1, SColor1, power);
 		Geometry.setMaterialFromRoot(ball, AColor, DColor, SColor, power);
@@ -166,7 +164,10 @@ public class RenderingScene extends MISApplet {
 		}
 		color = pack(0xd2, 0xb1, 0x6f);
 		for (int j = 0; j < scene.size(); j++) {
+			
+			if(scene.get(j).isInGeometry(hand)){
 			scene.get(j).colorPolygon(pix, color, W, zBuffer);
+			}
 		}
 	}
 }
