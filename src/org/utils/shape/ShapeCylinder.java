@@ -22,8 +22,8 @@ public class ShapeCylinder extends Geometry {
 			faces[i] = new int[] {2*i, 2*i+1, 2*(i+1)+1, 2*(i+1)};
 			
 			// calculate the vertice and normal on the end face
-			vertices[M*2+i*2] = new double[] {plotX(u, 1), plotY(u, 1), 1, plotX(u, 1), plotY(u, 1), 1};
-			vertices[M*2+i*2+1] = new double[] {plotX(u, 1), plotY(u, 1), -1, plotX(u, 1), plotY(u, 1), 1};
+			vertices[M*2+i*2] = new double[] {plotX(u, 1), plotY(u, 1), 1, 0, 0, 1};
+			vertices[M*2+i*2+1] = new double[] {plotX(u, 1), plotY(u, 1), -1, 0, 0, 1};
 			faces[M+i] = new int[] {M*4, M*4, M*2+i*2, M*2+(i+1)*2};
 			faces[2*M+i] = new int[] {M*4+1, M*4+1, M*2+i*2+1, M*2+(i+1)*2+1};
 		}
