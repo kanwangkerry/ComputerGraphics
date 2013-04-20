@@ -213,4 +213,20 @@ public abstract class Geometry implements IGeometry {
 				child.remove(i);
 		}
 	}
+	
+	public double[] getVertex(){
+		this.m.transform(this.vertices[0], dst1);
+		for(int i = 0 ; i < 3 ;i++){
+			dst2[i] = dst1[i];
+		}
+		return dst2;
+	}
+	
+	public double[] getCenter(){
+		this.m.transform(new double[] {0, 0, 0, 0, 0, 0}, dst1);
+		for(int i = 0 ; i < 3 ;i++){
+			dst2[i] = dst1[i];
+		}
+		return dst2;
+	}
 }

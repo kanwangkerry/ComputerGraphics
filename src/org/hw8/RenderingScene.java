@@ -53,7 +53,7 @@ public class RenderingScene extends MISApplet {
 		ball.globe(30, 30);
 
 		hand.getMatrix().scale(1, 1, 0.3);
-		ball.getMatrix().translate(-3, 0, 0);
+		ball.getMatrix().translate(0, 0, 3);
 
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 3; j++) {
