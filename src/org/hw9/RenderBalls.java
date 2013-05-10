@@ -25,7 +25,7 @@ public class RenderBalls extends MISApplet {
 	int frameCount = 0;
 	double alpha;
 
-	Light[] l = new Light[2];
+	Light[] l = new Light[1];
 	double[] eye = new double[] { 0, 0, 1.0 };
 
 	double[] AColor = { 0.2, 0, 0 };
@@ -78,9 +78,9 @@ public class RenderBalls extends MISApplet {
 		l[0] = new Light();
 		l[0].setLightDir(0.2, 1.0, .2);
 		l[0].setLightColor(1.0, 1.0, 1.0);
-		l[1] = new Light();
-		l[1].setLightDir(-0.2, -1.0, -.2);
-		l[1].setLightColor(1.0, 1.0, 1.0);
+//		l[1] = new Light();
+//		l[1].setLightDir(-0.2, -1.0, -.2);
+//		l[1].setLightColor(1.0, 1.0, 1.0);
 	}
 
 	@Override
