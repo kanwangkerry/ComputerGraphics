@@ -259,7 +259,7 @@ public class Triangle {
 				z = zl + (x - lx) * (zr - zl) / (rx - lx);
 				if (z > zBuffer[y * W + x]){
 					zBuffer[y*W+x] = z;
-					
+
 					pix[y * W + x] = MISApplet.pack(lColor[0] + (x - lx)
 							* (rColor[0] - lColor[0]) / (rx - lx), lColor[1]
 							+ (x - lx) * (rColor[1] - lColor[1]) / (rx - lx),

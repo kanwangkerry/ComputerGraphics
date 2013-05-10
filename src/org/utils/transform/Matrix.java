@@ -157,7 +157,7 @@ public class Matrix implements IMatrix {
 			tempD[i] = temp;
 		}
 		for (int i = 0; i < 3; i++) {
-			dst[i+3] = tempD[i] / tempD[3];
+			dst[i+3] = tempD[i];
 		}
 		
 		double normal = Math.sqrt(dst[3]*dst[3] + dst[4]*dst[4] + dst[5]*dst[5]);
