@@ -7,7 +7,6 @@ import org.utils.material.Light;
 import org.utils.raytracing.RayTracing;
 import org.utils.render.RenderPolygons;
 import org.utils.shape.Geometry;
-import org.utils.shape.ShapeCube;
 import org.utils.shape.ShapeNull;
 import org.utils.shape.ShapeSphere;
 import org.utils.transform.Projection;
@@ -22,7 +21,7 @@ public class RenderBalls extends MISApplet {
 	Geometry ball1 = new ShapeSphere();
 	Geometry ball2 = new ShapeSphere();
 	
-	double speedCirclePerSecond = 0.1;
+	double speedCirclePerSecond = .3;
 	int frameCount = 0;
 	double alpha;
 
@@ -51,19 +50,19 @@ public class RenderBalls extends MISApplet {
 		ball.globe(30, 30);
 
 		ball.getMatrix().translate(0, 0, 0);
-		ball.getMatrix().scale(.1, .1, .1);
+		ball.getMatrix().scale(1, 1, 1);
 		
 		ball1.getMatrix().identity();
 		ball1.globe(30, 30);
 
-		ball1.getMatrix().translate(0, .15, .15);
-		ball1.getMatrix().scale(.1, .1, .1);
+		ball1.getMatrix().translate(0, 1.5, 1.5);
+		ball1.getMatrix().scale(1, 1, 1);
 		
 		ball2.getMatrix().identity();
 		ball2.globe(30, 30);
 
-		ball2.getMatrix().translate(0, -.15, -.15);
-		ball2.getMatrix().scale(.1, .1, .1);
+		ball2.getMatrix().translate(0, -1.5, -1.5);
+		ball2.getMatrix().scale(1, 1, 1);
 
 		Geometry.setMaterialFromRoot(root, AColor1, DColor1, SColor1, power);
 		Geometry.setMaterialFromRoot(ball, AColor, DColor, SColor, power);
@@ -71,7 +70,7 @@ public class RenderBalls extends MISApplet {
 
 	@Override
 	public void initialize() {
-		F = 1;
+		F = 15;
 
 		proj = new Projection(W, H, F);
 		alpha = 0;
@@ -114,7 +113,9 @@ public class RenderBalls extends MISApplet {
 
 	@Override
 	public void computeImage(double time) {
+		long begin = System.currentTimeMillis();
 		initFrame(time); // INITIALIZE COMPUTATION FOR FRAME
+		System.out.println("1: "+(System.currentTimeMillis()-begin));
 		int rgb[] = new int[]{0x99, 0x26, 0x67};
 		int i = 0;
 		for (int y = 0; y < H; y++) {
@@ -122,18 +123,15 @@ public class RenderBalls extends MISApplet {
 				pix[i++] = pack(rgb[0], rgb[1], rgb[2]);
 			}
 		}
-
+		System.out.println("2: "+(System.currentTimeMillis()-begin));
 		RayTracing rt = new RayTracing();
 		rt.buildPainter(root, scene, W, H, F);
-		for (int y = 0; y < H; y++) {
-			for (int x = 0; x < W; x++) {
+		rt.bgColor = pack(rgb[0], rgb[1], rgb[2]);
+		for (int y = 2; y < H-4; y+=3) {
+			for (int x = 2; x < W-4; x+=4) {
 				rt.rayTraceRender(x, y, W, H, F, pix);
 			}
 		}
-//		int color;
-//		color = pack(0xd2, 0xb1, 0x6f);
-//		for (int j = 0; j < scene.size(); j++) {
-//			scene.get(j).colorPolygon(pix, color, W, zBuffer);
-//		}
+		System.out.println("3: "+(System.currentTimeMillis()-begin));
 	}
 }
