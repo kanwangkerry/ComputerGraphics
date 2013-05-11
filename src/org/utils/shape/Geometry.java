@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import org.utils.material.Light;
 import org.utils.material.Material;
+import org.utils.raytracing.RayTracing;
 import org.utils.render.RenderPolygons;
 import org.utils.transform.Matrix;
 import org.utils.transform.Projection;
@@ -77,18 +78,30 @@ public abstract class Geometry implements IGeometry {
 	 * @param proj
 	 */
 
-	public static void renderFromRoot(Geometry root,
-			ArrayList<RenderPolygons> s, Projection proj, Light l[],
-			double[] eye) {
+	public static void transformGeometryFromRoot(Geometry root) {
 		Geometry pointer = root;
 		LinkedList<IGeometry> q = new LinkedList<IGeometry>();
 		q.add(pointer);
 		while (!q.isEmpty()) {
 			pointer = (Geometry) q.pollFirst();
-			s.addAll(pointer.renderShapeWithColor(proj, l, eye));
 			for (int i = 0; i < pointer.getNumChild(); i++) {
 				pointer.getChild(i).getMatrix()
 						.leftMultiply(pointer.getMatrix());
+				q.add(pointer.getChild(i));
+			}
+		}
+	}
+
+	public static void renderFromRoot(Geometry root,
+			ArrayList<RenderPolygons> s, Projection proj, Light l[],
+			double[] eye, RayTracing rt) {
+		Geometry pointer = root;
+		LinkedList<IGeometry> q = new LinkedList<IGeometry>();
+		q.add(pointer);
+		while (!q.isEmpty()) {
+			pointer = (Geometry) q.pollFirst();
+			s.addAll(pointer.renderShapeWithColor(proj, l, eye, rt));
+			for (int i = 0; i < pointer.getNumChild(); i++) {
 				q.add(pointer.getChild(i));
 			}
 		}
@@ -115,7 +128,7 @@ public abstract class Geometry implements IGeometry {
 	 * @return
 	 */
 	public ArrayList<RenderPolygons> renderShapeWithColor(Projection p,
-			Light l[], double eye[]) {
+			Light l[], double eye[], RayTracing rt) {
 		double zIndex[] = new double[4];
 		ArrayList<RenderPolygons> result = new ArrayList<RenderPolygons>();
 		if (faces == null)
@@ -126,7 +139,7 @@ public abstract class Geometry implements IGeometry {
 
 				m.transform(vertices[faces[i][j]], dst1);
 				p.projectPoint(dst1, end[j]);
-				this.setColor(dst1, end[j], l, eye);
+				this.setColor(dst1, end[j], l, eye, rt);
 				zIndex[j] = p.getZIndex(dst1);
 			}
 			temp = new RenderPolygons();
@@ -146,8 +159,9 @@ public abstract class Geometry implements IGeometry {
 	 * @param l
 	 * @param eye
 	 */
-	private void setColor(double[] vertice, int point[], Light l[], double[] eye) {
-		material.calcColor(l, eye, vertice, point);
+	private void setColor(double[] vertice, int point[], Light l[],
+			double[] eye, RayTracing rt) {
+		material.calcColor(l, eye, vertice, point, rt, this);
 	}
 
 	/**
@@ -213,18 +227,18 @@ public abstract class Geometry implements IGeometry {
 				child.remove(i);
 		}
 	}
-	
-	public double[] getVertex(){
+
+	public double[] getVertex() {
 		this.m.transform(this.vertices[0], dst1);
-		for(int i = 0 ; i < 3 ;i++){
+		for (int i = 0; i < 3; i++) {
 			dst2[i] = dst1[i];
 		}
 		return dst2;
 	}
-	
-	public double[] getCenter(){
-		this.m.transform(new double[] {0, 0, 0, 0, 0, 0}, dst1);
-		for(int i = 0 ; i < 3 ;i++){
+
+	public double[] getCenter() {
+		this.m.transform(new double[] { 0, 0, 0, 0, 0, 0 }, dst1);
+		for (int i = 0; i < 3; i++) {
 			dst2[i] = dst1[i];
 		}
 		return dst2;

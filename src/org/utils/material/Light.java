@@ -10,9 +10,10 @@ public class Light {
 	public double[] lColor = new double[3];
 	
 	public void setLightDir(double x, double y, double z){
-		lDir[0] = x;
-		lDir[1] = y;
-		lDir[2] = z;
+		double normal = Math.sqrt(x*x+y*y+z*z);
+		lDir[0] = x/normal;
+		lDir[1] = y/normal;
+		lDir[2] = z/normal;
 	}
 	
 	public void setLightColor(double x, double y, double z){

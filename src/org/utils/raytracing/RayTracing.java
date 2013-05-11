@@ -20,15 +20,21 @@ public class RayTracing {
 	private void initRayTraceEnd(int x, int y, int W, int H, double F) {
 		this.setRayVector((x - 0.5 * W) * F / H, (0.5 * H - y) * F / H, -F);
 	}
+	
+	public double getResult(){
+		return result[0];
+	}
 
-	private Geometry getNearestObj() {
+	public Geometry getNearestObj() {
 		boolean flag;
 		double T = Integer.MAX_VALUE;
 		Geometry tempResult = null;
 
-		for (Geometry obj : objPainter.keySet()) {
+		for (Geometry obj : objInfo.keySet()) {
 			flag = this.raytrace(obj);
 			if (flag) {
+				if(result[0] < 0)
+					continue;
 				if (result[0] < T) {
 					T = result[0];
 					tempResult = obj;
@@ -39,13 +45,38 @@ public class RayTracing {
 		return tempResult;
 	}
 	
-	public void setRayStartPoint(double x, double y, double z){
+	public Geometry getNearestOtherObj(Geometry from) {
+		boolean flag;
+		double T = Integer.MAX_VALUE;
+		Geometry tempResult = null;
+
+		for (Geometry obj : objInfo.keySet()) {
+			if(obj == from)
+				continue;
+			flag = this.raytrace(obj);
+			if (flag) {
+				if(result[0] < 0)
+					continue;
+				if (result[0] < T) {
+					T = result[0];
+					tempResult = obj;
+				}
+			}
+		}
+
+		return tempResult;
+	}
+
+	public void setRayStartPoint(double x, double y, double z) {
 		v[0] = x;
 		v[1] = y;
 		v[2] = z;
+		for (ObjectInfo tempInfo : objInfo.values()) {
+			diff_sv(tempInfo.s, this.v, tempInfo.s_v);
+		}
 	}
-	
-	public void setRayVector(double x, double y, double z){
+
+	public void setRayVector(double x, double y, double z) {
 		w[0] = x;
 		w[1] = y;
 		w[2] = z;
@@ -55,10 +86,10 @@ public class RayTracing {
 			w[i] = w[i] / normal;
 	}
 
-	//speeded up ray tracing
+	// speeded up ray tracing
 	public void rayTraceRender(int x, int y, int W, int H, double F,
 			int pixel[]) {
-		this.initRayTraceEnd(x + 2, y + 2, W, H, F);
+		this.initRayTraceEnd(x + 3, y + 3, W, H, F);
 		Geometry tempResult = this.getNearestObj();
 		int color = (tempResult == null ? bgColor : objPainter.get(tempResult)
 				.getColor(x + 2, y + 2));
@@ -68,10 +99,10 @@ public class RayTracing {
 			if (tempColor != this.unpack(pixel[(y - 1) * W + x - 1], i)) {
 				break;
 			}
-			if (tempColor != this.unpack(pixel[(y+2) * W + x - 1], i)) {
+			if (tempColor != this.unpack(pixel[(y + 3) * W + x - 1], i)) {
 				break;
 			}
-			if (tempColor != this.unpack(pixel[(y - 1) * W + x+2], i)) {
+			if (tempColor != this.unpack(pixel[(y - 1) * W + x + 3], i)) {
 				break;
 			}
 		}
@@ -82,11 +113,11 @@ public class RayTracing {
 				}
 			}
 		} else {
-//			int rSum = 0, gSum = 0, bSum = 0;
+			// int rSum = 0, gSum = 0, bSum = 0;
 			int tempColor;
-//			int r[] = new int[16];
-//			int g[] = new int[16];
-//			int b[] = new int[16];
+			// int r[] = new int[16];
+			// int g[] = new int[16];
+			// int b[] = new int[16];
 			for (int j = 0; j < 4; j++) {
 				for (int k = 0; k < 4; k++) {
 					this.initRayTraceEnd(x + k, y + j, W, H, F);
@@ -94,24 +125,24 @@ public class RayTracing {
 					tempColor = (tempResult == null ? bgColor : objPainter.get(
 							tempResult).getColor(x + k, y + j));
 					pixel[(y + j) * W + x + k] = tempColor;
-//					rSum += this.unpack(tempColor, 0);
-//					r[j * 4 + k] = this.unpack(tempColor, 0);
-//					gSum += this.unpack(tempColor, 1);
-//					g[j * 4 + k] = this.unpack(tempColor, 1);
-//					bSum += this.unpack(tempColor, 2);
-//					b[j * 4 + k] = this.unpack(tempColor, 2);
+					// rSum += this.unpack(tempColor, 0);
+					// r[j * 4 + k] = this.unpack(tempColor, 0);
+					// gSum += this.unpack(tempColor, 1);
+					// g[j * 4 + k] = this.unpack(tempColor, 1);
+					// bSum += this.unpack(tempColor, 2);
+					// b[j * 4 + k] = this.unpack(tempColor, 2);
 				}
 			}
-//			color = MISApplet.pack(rSum / 16, gSum / 16, bSum / 16);
-//			for (int j = 0; j < 4; j++) {
-//				for (int k = 0; k < 4; k++) {
-//					// pixel[(y + j) * W + x + k] = color;
-//					pixel[(y + j) * W + x + k] = MISApplet.pack(
-//							(r[j * 4 + k] + rSum / 16) / 2,
-//							(g[j * 4 + k] + gSum / 16) / 2,
-//							(b[j * 4 + k] + bSum / 16) / 2);
-//				}
-//			}
+			// color = MISApplet.pack(rSum / 16, gSum / 16, bSum / 16);
+			// for (int j = 0; j < 4; j++) {
+			// for (int k = 0; k < 4; k++) {
+			// // pixel[(y + j) * W + x + k] = color;
+			// pixel[(y + j) * W + x + k] = MISApplet.pack(
+			// (r[j * 4 + k] + rSum / 16) / 2,
+			// (g[j * 4 + k] + gSum / 16) / 2,
+			// (b[j * 4 + k] + bSum / 16) / 2);
+			// }
+			// }
 		}
 
 	}
@@ -139,7 +170,6 @@ public class RayTracing {
 
 	boolean raytrace(Geometry objIndex) {
 		ObjectInfo tempInfo = objInfo.get(objIndex);
-		
 
 		double A = 1.0;
 		double B = 2 * dot(w, tempInfo.s_v);
@@ -175,24 +205,10 @@ public class RayTracing {
 		LinkedList<IGeometry> q = new LinkedList<IGeometry>();
 		q.add(pointer);
 		ColorPainter painter;
-		ObjectInfo tempInfo;
 		double zBuffer[] = new double[W * H];
-		v[0] = 0;
-		v[1] = 0;
-		v[2] = F;
 		while (!q.isEmpty()) {
 
 			pointer = (Geometry) q.pollFirst();
-			// set object info
-			if (pointer != root) {
-				tempInfo = new ObjectInfo();
-				System.arraycopy(pointer.getVertex(), 0, tempInfo.point, 0, 3);
-				System.arraycopy(pointer.getCenter(), 0, tempInfo.s, 0, 3);
-				tempInfo.r = this.calcRadius(tempInfo.s, tempInfo.point);
-				diff_sv(tempInfo.s, this.v, tempInfo.s_v);
-				objInfo.put(pointer, tempInfo);
-			}
-
 			painter = new ColorPainter(W, H);
 			// initial zbuffer
 			for (int i = 0; i < W; i++) {
@@ -212,6 +228,28 @@ public class RayTracing {
 			}
 		}
 		this.objPainter.remove(root);
+	}
+
+	public void setRayTracingObjects(Geometry root, double F) {
+		Geometry pointer = root;
+		LinkedList<IGeometry> q = new LinkedList<IGeometry>();
+		q.add(pointer);
+		ObjectInfo tempInfo;
+		while (!q.isEmpty()) {
+			pointer = (Geometry) q.pollFirst();
+			// set object info
+			if (pointer != root) {
+				tempInfo = new ObjectInfo();
+				System.arraycopy(pointer.getVertex(), 0, tempInfo.point, 0, 3);
+				System.arraycopy(pointer.getCenter(), 0, tempInfo.s, 0, 3);
+				tempInfo.r = this.calcRadius(tempInfo.s, tempInfo.point);
+				diff_sv(tempInfo.s, this.v, tempInfo.s_v);
+				objInfo.put(pointer, tempInfo);
+			}
+			for (int i = 0; i < pointer.getNumChild(); i++) {
+				q.add(pointer.getChild(i));
+			}
+		}
 	}
 
 	private int unpack(int packedRGB, int component) {

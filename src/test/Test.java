@@ -140,7 +140,7 @@ public class Test extends MISApplet {
 		root.getMatrix().translate(0, -2, 0);
 		root.getMatrix().scale(1.8, 1.8, 1.8);
 		root.getMatrix().rotateY(alpha);
-		Geometry.renderFromRoot(root, scene, proj, l, eye);
+//		Geometry.renderFromRoot(root, scene, proj, l, eye);
 	}
 
 	@Override

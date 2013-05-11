@@ -21,11 +21,13 @@ public class RenderBalls extends MISApplet {
 	Geometry ball1 = new ShapeSphere();
 	Geometry ball2 = new ShapeSphere();
 	
+	RayTracing rt = new RayTracing();
+	
 	double speedCirclePerSecond = .3;
 	int frameCount = 0;
 	double alpha;
 
-	Light[] l = new Light[1];
+	Light[] l = new Light[2];
 	double[] eye = new double[] { 0, 0, 1.0 };
 
 	double[] AColor = { 0.2, 0, 0 };
@@ -76,11 +78,11 @@ public class RenderBalls extends MISApplet {
 		alpha = 0;
 
 		l[0] = new Light();
-		l[0].setLightDir(0.2, 1.0, .2);
+		l[0].setLightDir(0.2, 1.0, 1.0);
 		l[0].setLightColor(1.0, 1.0, 1.0);
-//		l[1] = new Light();
-//		l[1].setLightDir(-0.2, -1.0, -.2);
-//		l[1].setLightColor(1.0, 1.0, 1.0);
+		l[1] = new Light();
+		l[1].setLightDir(-0.2, -1.0, -.2);
+		l[1].setLightColor(1.0, 1.0, 1.0);
 	}
 
 	@Override
@@ -99,9 +101,14 @@ public class RenderBalls extends MISApplet {
 		}
 
 		 root.getMatrix().translate(0, 0, 0);
-		// root.getMatrix().scale(1.8, 1.8, 1.8);
 		root.getMatrix().rotateY(alpha);
-		Geometry.renderFromRoot(root, scene, proj, l, eye);
+		
+		Geometry.transformGeometryFromRoot(root);
+		rt = new RayTracing();
+		rt.setRayStartPoint(0, 0, F);
+		rt.setRayTracingObjects(root, F);
+		Geometry.renderFromRoot(root, scene, proj, l, eye, rt);
+
 	}
 
 	@Override
@@ -115,7 +122,6 @@ public class RenderBalls extends MISApplet {
 	public void computeImage(double time) {
 		long begin = System.currentTimeMillis();
 		initFrame(time); // INITIALIZE COMPUTATION FOR FRAME
-		System.out.println("1: "+(System.currentTimeMillis()-begin));
 		int rgb[] = new int[]{0x99, 0x26, 0x67};
 		int i = 0;
 		for (int y = 0; y < H; y++) {
@@ -123,15 +129,15 @@ public class RenderBalls extends MISApplet {
 				pix[i++] = pack(rgb[0], rgb[1], rgb[2]);
 			}
 		}
-		System.out.println("2: "+(System.currentTimeMillis()-begin));
-		RayTracing rt = new RayTracing();
+		rt.setRayStartPoint(0, 0, F);
 		rt.buildPainter(root, scene, W, H, F);
 		rt.bgColor = pack(rgb[0], rgb[1], rgb[2]);
-		for (int y = 2; y < H-4; y+=3) {
+		rt.setRayStartPoint(0, 0, F);
+		for (int y = 2; y < H-4; y+=4) {
 			for (int x = 2; x < W-4; x+=4) {
 				rt.rayTraceRender(x, y, W, H, F, pix);
 			}
 		}
-		System.out.println("3: "+(System.currentTimeMillis()-begin));
+		System.out.println("frame: "+(System.currentTimeMillis()-begin));
 	}
 }
