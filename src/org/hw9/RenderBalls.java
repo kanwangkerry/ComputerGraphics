@@ -20,9 +20,9 @@ public class RenderBalls extends MISApplet {
 	Geometry ball = new ShapeSphere();
 	Geometry ball1 = new ShapeSphere();
 	Geometry ball2 = new ShapeSphere();
-	
+
 	RayTracing rt = new RayTracing();
-	
+
 	double speedCirclePerSecond = .3;
 	int frameCount = 0;
 	double alpha;
@@ -47,19 +47,19 @@ public class RenderBalls extends MISApplet {
 		root.addChild(ball);
 		root.addChild(ball1);
 		root.addChild(ball2);
-		
+
 		ball.getMatrix().identity();
 		ball.globe(30, 30);
 
 		ball.getMatrix().translate(0, 0, 0);
 		ball.getMatrix().scale(1, 1, 1);
-		
+
 		ball1.getMatrix().identity();
 		ball1.globe(30, 30);
 
 		ball1.getMatrix().translate(0, 1.5, 1.5);
 		ball1.getMatrix().scale(1, 1, 1);
-		
+
 		ball2.getMatrix().identity();
 		ball2.globe(30, 30);
 
@@ -77,12 +77,15 @@ public class RenderBalls extends MISApplet {
 		proj = new Projection(W, H, F);
 		alpha = 0;
 
+		int x = 3;
 		l[0] = new Light();
 		l[0].setLightDir(0.2, 1.0, 1.0);
 		l[0].setLightColor(1.0, 1.0, 1.0);
+		l[0].setLightSource(.2*x, 1*x, 1*x);
 		l[1] = new Light();
 		l[1].setLightDir(-0.2, -1.0, -.2);
 		l[1].setLightColor(1.0, 1.0, 1.0);
+		l[1].setLightSource(-.2*x, -1*x, -.2*x);
 	}
 
 	@Override
@@ -100,9 +103,9 @@ public class RenderBalls extends MISApplet {
 			}
 		}
 
-		 root.getMatrix().translate(0, 0, 0);
+		root.getMatrix().translate(0, 0, 0);
 		root.getMatrix().rotateY(alpha);
-		
+
 		Geometry.transformGeometryFromRoot(root);
 		rt = new RayTracing();
 		rt.setRayStartPoint(0, 0, F);
@@ -122,7 +125,7 @@ public class RenderBalls extends MISApplet {
 	public void computeImage(double time) {
 		long begin = System.currentTimeMillis();
 		initFrame(time); // INITIALIZE COMPUTATION FOR FRAME
-		int rgb[] = new int[]{0x99, 0x26, 0x67};
+		int rgb[] = new int[] { 0x99, 0x26, 0x67 };
 		int i = 0;
 		for (int y = 0; y < H; y++) {
 			for (int x = 0; x < W; x++) { // COMPUTE COLOR FOR EACH PIXEL
@@ -133,11 +136,11 @@ public class RenderBalls extends MISApplet {
 		rt.buildPainter(root, scene, W, H, F);
 		rt.bgColor = pack(rgb[0], rgb[1], rgb[2]);
 		rt.setRayStartPoint(0, 0, F);
-		for (int y = 2; y < H-4; y+=4) {
-			for (int x = 2; x < W-4; x+=4) {
+		for (int y = 2; y < H - 4; y += 4) {
+			for (int x = 2; x < W - 4; x += 4) {
 				rt.rayTraceRender(x, y, W, H, F, pix);
 			}
 		}
-		System.out.println("frame: "+(System.currentTimeMillis()-begin));
+		System.out.println("frame: " + (System.currentTimeMillis() - begin));
 	}
 }

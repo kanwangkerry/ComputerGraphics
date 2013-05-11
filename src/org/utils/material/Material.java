@@ -39,6 +39,18 @@ public class Material {
 		this.specularPower = power;
 	}
 
+	private double lightColor[] = new double[3];
+
+	private void calcLightColor(Light l, double vertex[]) {
+		double d = 0;
+		for (int i = 0; i < 3; i++)
+			d += (vertex[i] - l.lSource[i]) * (vertex[i] - l.lSource[i]);
+		d = Math.sqrt(d);
+		for(int i = 0 ; i < 3; i++){
+			lightColor[i] = l.lColor[i]/Math.pow(d, 1);
+		}
+	}
+
 	/**
 	 * Calculate the color by eye, light, normal and this material. Save the
 	 * result in dst[]
@@ -64,8 +76,8 @@ public class Material {
 			// test if in shadow. If in shadow, then do not add any diffuse
 			// or specular color of this light
 			if (shadowRT != null) {
-				shadowRT.setRayVector(l[i].lDir[0] * 10 - normal[0],
-						l[i].lDir[1] * 10 - normal[1], l[i].lDir[2] * 10
+				shadowRT.setRayVector(l[i].lSource[0] - normal[0],
+						l[i].lSource[1] - normal[1], l[i].lSource[2]
 								- normal[2]);
 				tempG = shadowRT.getNearestOtherObj(from);
 
@@ -90,9 +102,10 @@ public class Material {
 			for (int j = 0; j < 3; j++) {
 				tempColor[j] += temp * this.specularColor[j];
 			}
-
+			
+			this.calcLightColor(l[i], normal);
 			for (int j = 0; j < 3; j++) {
-				result[j] += tempColor[j] * l[i].lColor[j];
+				result[j] += tempColor[j] * lightColor[j];
 			}
 		}
 		for (int i = 0; i < 3; i++) {

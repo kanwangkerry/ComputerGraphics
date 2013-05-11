@@ -8,6 +8,13 @@ package org.utils.material;
 public class Light {
 	double[] lDir = new double[3];
 	public double[] lColor = new double[3];
+	double[] lSource = new double[3];
+	
+	public void setLightSource(double x, double y, double z){
+		lSource[0] = x;
+		lSource[1] = y;
+		lSource[2] = z;
+	}
 	
 	public void setLightDir(double x, double y, double z){
 		double normal = Math.sqrt(x*x+y*y+z*z);
