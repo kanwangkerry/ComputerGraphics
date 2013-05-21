@@ -3,6 +3,7 @@ package org.hw9;
 import java.util.ArrayList;
 
 import org.utils.MISApplet;
+import org.utils.material.ImageBuffer;
 import org.utils.material.Light;
 import org.utils.raytracing.RayTracing;
 import org.utils.render.RenderPolygons;
@@ -40,6 +41,7 @@ public class RenderBalls extends MISApplet {
 	double power1 = 10.0;
 
 	double F;
+	ImageBuffer b;
 
 	public void create() {
 		root = new ShapeNull();
@@ -56,12 +58,14 @@ public class RenderBalls extends MISApplet {
 
 		ball1.getMatrix().identity();
 		ball1.globe(30, 30);
+		ball1.makeTexture();
 
 		ball1.getMatrix().translate(0, 1.5, 1.5);
 		ball1.getMatrix().scale(1, 1, 1);
 
 		ball2.getMatrix().identity();
 		ball2.globe(30, 30);
+		ball2.makeTexture();
 
 		ball2.getMatrix().translate(0, -1.5, -1.5);
 		ball2.getMatrix().scale(1, 1, 1);
@@ -86,6 +90,7 @@ public class RenderBalls extends MISApplet {
 		l[1].setLightDir(-0.2, -1.0, -.2);
 		l[1].setLightColor(1.0, 1.0, 1.0);
 		l[1].setLightSource(-.2*x, -1*x, -.2*x);
+		b = new ImageBuffer("http://www.whatswrongwithmyfamily.com/wp-content/uploads/2013/05/sun.jpg", this);
 	}
 
 	@Override
@@ -105,6 +110,9 @@ public class RenderBalls extends MISApplet {
 
 		root.getMatrix().translate(0, 0, 0);
 		root.getMatrix().rotateY(alpha);
+		root.getMatrix().scale(1.5, 1.5, 1.5);
+		
+		ball.material.setImage(b);
 
 		Geometry.transformGeometryFromRoot(root);
 		rt = new RayTracing();

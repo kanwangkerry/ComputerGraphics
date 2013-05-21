@@ -22,6 +22,8 @@ public class Material {
 	private double normalV[] = new double[3];
 	private double tempV[] = new double[3];
 
+	public ImageBuffer buffer;
+
 	public Material() {
 		for (int i = 0; i < 3; i++) {
 			ambientColor[i] = 1.0;
@@ -46,9 +48,28 @@ public class Material {
 		for (int i = 0; i < 3; i++)
 			d += (vertex[i] - l.lSource[i]) * (vertex[i] - l.lSource[i]);
 		d = Math.sqrt(d);
-		for(int i = 0 ; i < 3; i++){
-			lightColor[i] = l.lColor[i]/Math.pow(d, 1);
+		for (int i = 0; i < 3; i++) {
+			lightColor[i] = l.lColor[i] / Math.pow(d, 1);
 		}
+	}
+
+	public int[] calColorOnBallWithImage(double vertice[]) {
+		double n = vertice[0] * vertice[0] + vertice[1] * vertice[1]
+				+ vertice[2] * vertice[2];
+		n = Math.sqrt(n);
+		double u = Math.atan2((vertice[1]+0.0001)/ n, vertice[0]/n)/ (2 * Math.PI);
+		double v = (1 + vertice[2] / n) / 2;
+		int x = (int) (u * (buffer.width-1));
+		int y = (int) (v * (buffer.height-1));
+		int color[] = new int[3];
+		color[0] = buffer.get(x, y, 0);
+		color[1] = buffer.get(x, y, 1);
+		color[2] = buffer.get(x, y, 2);
+		return color;
+	}
+
+	public void setImage(ImageBuffer b) {
+		this.buffer = b;
 	}
 
 	/**
@@ -102,14 +123,23 @@ public class Material {
 			for (int j = 0; j < 3; j++) {
 				tempColor[j] += temp * this.specularColor[j];
 			}
-			
+
 			this.calcLightColor(l[i], normal);
 			for (int j = 0; j < 3; j++) {
 				result[j] += tempColor[j] * lightColor[j];
 			}
 		}
-		for (int i = 0; i < 3; i++) {
-			dst[i + 2] = (int) (Math.pow(result[i], 0.45) * 255);
+		if (buffer != null) {
+			int color[] = this.calColorOnBallWithImage(normal);
+			for (int i = 0; i < 3; i++) {
+				// dst[i + 2] = (int) (Math.pow(result[i], 0.45) * 255);
+				dst[i + 2] = color[i];
+			}
+		} else {
+			for (int i = 0; i < 3; i++) {
+				dst[i + 2] = (int) (Math.pow(result[i], 0.45) * 255);
+			}
+
 		}
 	}
 

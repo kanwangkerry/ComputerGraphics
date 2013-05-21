@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import org.utils.material.ImprovedNoise;
 import org.utils.material.Light;
 import org.utils.material.Material;
 import org.utils.raytracing.RayTracing;
@@ -27,7 +28,7 @@ public abstract class Geometry implements IGeometry {
 	 */
 	private ArrayList<IGeometry> child = new ArrayList<IGeometry>();
 
-	Material material = new Material();
+	public Material material = new Material();
 
 	/**
 	 * abstract functions, need to be implemented by the subclass.
@@ -136,11 +137,21 @@ public abstract class Geometry implements IGeometry {
 		RenderPolygons temp;
 		for (int i = 0; i < faces.length; i++) {
 			for (int j = 0; j < 4; j++) {
-
-				m.transform(vertices[faces[i][j]], dst1);
-				p.projectPoint(dst1, end[j]);
-				this.setColor(dst1, end[j], l, eye, rt);
-				zIndex[j] = p.getZIndex(dst1);
+				if (this.material.buffer != null) {
+					m.transform(vertices[faces[i][j]], dst1);
+					p.projectPoint(dst1, end[j]);
+					zIndex[j] = p.getZIndex(dst1);
+					int[] color = material
+							.calColorOnBallWithImage(vertices[faces[i][j]]);
+					for (int k = 0; k < 3; k++) {
+						end[j][k + 2] = color[k];
+					}
+				} else {
+					m.transform(vertices[faces[i][j]], dst1);
+					p.projectPoint(dst1, end[j]);
+					this.setColor(dst1, end[j], l, eye, rt);
+					zIndex[j] = p.getZIndex(dst1);
+				}
 			}
 			temp = new RenderPolygons();
 			temp.renderToTrapezoidWithColor(end, zIndex);
@@ -148,6 +159,79 @@ public abstract class Geometry implements IGeometry {
 			result.add(temp);
 		}
 		return result;
+	}
+
+	public void makeTexture() {
+		for (int i = 0; i < faces.length; i++) {
+			for (int j = 0; j < 4; j++) {
+				textureNormal(vertices[faces[i][j]]);
+			}
+		}
+	}
+
+	private void textureNormal(double[] vertice) {
+		double normal[] = new double[3];
+		normal[0] = vertice[3];
+		normal[1] = vertice[4];
+		normal[2] = vertice[5];
+
+		// SAMPLE THE FUNCTION FOUR TIMES TO GET GRADIENT INFO
+
+		double f0 = f(normal[0], normal[1], normal[2]), fx = f(
+				normal[0] + .0001, normal[1], normal[2]), fy = f(normal[0],
+				normal[1] + .0001, normal[2]), fz = f(normal[0], normal[1],
+				normal[2] + .0001);
+
+		// SUBTRACT THE FUNCTION'S GRADIENT FROM THE SURFACE NORMAL
+
+		normal[0] -= (fx - f0) / .0001;
+		normal[1] -= (fy - f0) / .0001;
+		normal[2] -= (fz - f0) / .0001;
+
+		double x = normal[0] * normal[0] + normal[1] * normal[1] + normal[2]
+				* normal[2];
+		x = Math.sqrt(x);
+
+		vertice[3] = normal[0] / x;
+		vertice[4] = normal[1] / x;
+		vertice[5] = normal[2] / x;
+	}
+
+	private double f(double x, double y, double z) {
+		int type = 0;
+		switch (type) {
+		case 0:
+			return .03 * noise(x, y, z, 8);
+		case 1:
+			return .01 * stripes(x + 2 * turbulence(x, y, z, 1), 1.6);
+		default:
+			return -.10 * turbulence(x, y, z, 1);
+		}
+	}
+
+	// STRIPES TEXTURE (GOOD FOR MAKING MARBLE)
+
+	private double stripes(double x, double f) {
+		double t = .5 + .5 * Math.sin(f * 2 * Math.PI * x);
+		return t * t - .5;
+	}
+
+	// TURBULENCE TEXTURE
+
+	private double turbulence(double x, double y, double z, double freq) {
+		double t = -.5;
+		for (; freq <= 640 / 12; freq *= 2)
+			t += Math.abs(noise(x, y, z, freq) / freq);
+		return t;
+	}
+
+	private double noise(double x, double y, double z, double freq) {
+		double x1, y1, z1;
+		x1 = .707 * x - .707 * z;
+		z1 = .707 * x + .707 * z;
+		y1 = .707 * x1 + .707 * y;
+		x1 = .707 * x1 - .707 * y;
+		return ImprovedNoise.noise(freq * x1 + 100, freq * y1, freq * z1);
 	}
 
 	/**
